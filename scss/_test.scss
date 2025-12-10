@@ -1,0 +1,152 @@
+// Тест страница
+.test-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.test-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    margin-top: 7rem;
+}
+
+.test-title {
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+.test-description {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+// Progress Bar
+.progress-container {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.progress-bar {
+    height: 8px;
+    background: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+// Question Card
+.question-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+}
+
+.question-number {
+    color: var(--accent-purple);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.question-text {
+    font-weight: 600;
+    margin-bottom: 2rem;
+    line-height: 1.4;
+}
+
+// Options
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.option-radio {
+    display: none;
+}
+
+.option-label {
+    display: flex;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+        content: '';
+        width: 22px;
+        height: 22px;
+        border: 2px solid var(--border-color);
+        border-radius: 50%;
+        margin-right: 1rem;
+        transition: all 0.3s ease;
+        background: transparent;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 2;
+    }
+    
+    &:hover {
+        border-color: var(--accent-purple);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(139, 92, 246, 0.2);
+        
+        &::before {
+            border-color: var(--accent-purple);
+        }
+    }
+    
+    &.selected {
+        border-color: var(--accent-purple);
+        background: rgba(139, 92, 246, 0.1);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(139, 92, 246, 0.3);
+        
+        &::before {
+            border-color: var(--accent-purple);
+            background: var(--accent-purple);
+            box-shadow: inset 0 0 0 4px var(--card-bg);
+        }
+    }
+}
+
+.option-text {
+    position: relative;
+    z-index: 2;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+}
+
+.option-label.selected .option-text {
+    font-weight: 600;
+}

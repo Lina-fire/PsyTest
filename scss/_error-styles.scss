@@ -1,0 +1,529 @@
+// ===== СТИЛИ ДЛЯ ОШИБОК И ВАЛИДАЦИИ =====
+
+// Сообщения об ошибках
+.error-message {
+    color: #ff6b6b;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 107, 107, 0.1);
+    border-radius: 10px;
+    border-left: 3px solid #ff6b6b;
+    display: none;
+    animation: fadeIn 0.3s ease;
+    align-items: center;
+    gap: 0.5rem;
+    
+    i {
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    
+    &.show {
+        display: flex;
+    }
+}
+
+// Стили для карточки вопроса с ошибкой
+.question-card {
+    transition: all 0.3s ease;
+    
+    &.error {
+        border-color: #ff6b6b;
+        animation: shake 0.5s ease;
+        box-shadow: 0 0 0 1px rgba(255, 107, 107, 0.3), 
+                    0 5px 20px rgba(255, 107, 107, 0.2);
+        
+        .question-number {
+            color: #ff6b6b;
+        }
+    }
+}
+
+// Стили для радиокнопок с ошибкой
+.option-label {
+    &.error {
+        border-color: #ff6b6b;
+        background: rgba(255, 107, 107, 0.05);
+        
+        &::before {
+            border-color: #ff6b6b !important;
+        }
+        
+        &:hover {
+            border-color: #ff4757;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+    }
+    
+    &.selected.error {
+        background: rgba(255, 107, 107, 0.15);
+    }
+}
+
+// Анимации для ошибок
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(-10px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+@keyframes pulseError {
+    0%, 100% { 
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3); 
+    }
+    50% { 
+        box-shadow: 0 4px 20px rgba(255, 107, 107, 0.6); 
+    }
+}
+
+// Стили для кнопок с ошибкой
+.btn-primary {
+    &.error {
+        background: linear-gradient(135deg, #ff6b6b, #ff4757) !important;
+        animation: pulseError 1.5s infinite;
+        
+        &:hover {
+            background: linear-gradient(135deg, #ff4757, #ff2e2e) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4) !important;
+        }
+    }
+    
+    &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+        
+        &:hover {
+            transform: none;
+            box-shadow: none;
+        }
+    }
+}
+
+// Стили для отключенных кнопок
+.btn-outline.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    
+    &:hover {
+        transform: none;
+        border-color: var(--border-color);
+        color: var(--text-secondary);
+    }
+}
+
+// Стили для модального окна с ошибкой
+.error-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+    padding: 1rem;
+    
+    &-content {
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 2.5rem;
+        max-width: 500px;
+        width: 100%;
+        border: 1px solid #ff6b6b;
+        box-shadow: 0 20px 60px rgba(255, 107, 107, 0.3),
+                    0 0 0 1px rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #ff4757);
+        }
+    }
+    
+    &-icon {
+        text-align: center;
+        font-size: 3.5rem;
+        color: #ff6b6b;
+        margin-bottom: 1.5rem;
+        animation: pulseError 2s infinite;
+        
+        i {
+            filter: drop-shadow(0 4px 8px rgba(255, 107, 107, 0.3));
+        }
+    }
+    
+    &-title {
+        color: #ff6b6b;
+        text-align: center;
+        margin-bottom: 1rem;
+        font-weight: 700;
+        font-size: 1.5rem;
+    }
+    
+    &-message {
+        text-align: center;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+        font-size: 1rem;
+        
+        span {
+            display: block;
+            margin-top: 0.75rem;
+            font-weight: 600;
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+            padding: 0.75rem;
+            border-radius: 10px;
+            border-left: 3px solid #ff6b6b;
+        }
+    }
+    
+    &-close {
+        display: block;
+        margin: 0 auto;
+        background: linear-gradient(135deg, #ff6b6b, #ff4757) !important;
+        border: none !important;
+        padding: 0.875rem 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        
+        &:hover {
+            background: linear-gradient(135deg, #ff4757, #ff2e2e) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+    }
+}
+
+// Стили для уведомления о копировании
+.share-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--accent-purple);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(139, 92, 246, 0.3);
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+    backdrop-filter: blur(10px);
+    border-left: 4px solid var(--accent-purple);
+    
+    @media (max-width: 768px) {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        width: calc(100% - 20px);
+    }
+    
+    &-content {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--accent-purple);
+        font-weight: 600;
+        
+        i {
+            font-size: 1.2rem;
+            animation: bounce 0.5s ease;
+        }
+        
+        span {
+            font-size: 0.95rem;
+        }
+    }
+}
+
+// Анимация появления уведомления
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+// Анимация подпрыгивания для иконки
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+// Индикатор обязательности вопроса
+.question-number {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    &::after {
+        content: '*';
+        color: #ff6b6b;
+        font-weight: bold;
+        font-size: 1.2rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+}
+
+.question-card.error {
+    .question-number::after {
+        opacity: 1;
+        animation: pulseError 1s infinite;
+    }
+}
+
+// Прогресс бар с индикацией ошибок
+.progress-container {
+    position: relative;
+    
+    &.has-error {
+        border-color: rgba(255, 107, 107, 0.3);
+        
+        .progress-fill {
+            background: linear-gradient(135deg, #ff6b6b, #ff4757);
+        }
+        
+        .progress-info {
+            color: #ff6b6b;
+        }
+    }
+}
+
+// Адаптивные стили для мобильных устройств
+@media (max-width: 768px) {
+    .error-message {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.8rem;
+        
+        i {
+            font-size: 0.9rem;
+        }
+    }
+    
+    .error-modal {
+        padding: 0.5rem;
+        
+        &-content {
+            padding: 2rem 1.5rem;
+        }
+        
+        &-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        &-title {
+            font-size: 1.3rem;
+        }
+        
+        &-message {
+            font-size: 0.9rem;
+            
+            span {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+        }
+    }
+    
+    .share-notification {
+        padding: 0.75rem 1rem;
+        
+        &-content {
+            span {
+                font-size: 0.85rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .error-modal {
+        &-content {
+            padding: 1.5rem 1rem;
+        }
+        
+        &-icon {
+            font-size: 2rem;
+        }
+        
+        &-title {
+            font-size: 1.1rem;
+        }
+        
+        &-message {
+            font-size: 0.85rem;
+        }
+    }
+    
+    .option-label.error {
+        padding: 0.875rem 1rem;
+        
+        &::before {
+            width: 18px;
+            height: 18px;
+        }
+    }
+    
+    .btn-primary.error {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+// Стили для клавиатурных подсказок
+.keyboard-hint {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+    
+    &-item {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        
+        kbd {
+            background: var(--darker-bg);
+            padding: 0.125rem 0.375rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            font-family: monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    }
+}
+
+// Подсветка текущего вопроса
+.question-card {
+    &.current {
+        border-color: var(--accent-purple);
+        box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.1);
+    }
+}
+
+// Стили для плавного скролла к ошибке
+html {
+    scroll-behavior: smooth;
+}
+
+// Стили для состояния загрузки при завершении теста
+.finish-btn {
+    position: relative;
+    
+    &.loading {
+        pointer-events: none;
+        opacity: 0.8;
+        
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        span {
+            opacity: 0;
+        }
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+// Стили для валидации всех вопросов
+.validation-summary {
+    background: rgba(255, 107, 107, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-left: 4px solid #ff6b6b;
+    
+    &-title {
+        color: #ff6b6b;
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        
+        i {
+            font-size: 1.2rem;
+        }
+    }
+    
+    &-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        
+        li {
+            padding: 0.375rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            
+            &::before {
+                content: '•';
+                color: #ff6b6b;
+                font-weight: bold;
+                margin-right: 0.5rem;
+            }
+            
+            a {
+                color: #ff6b6b;
+                text-decoration: none;
+                font-weight: 500;
+                
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

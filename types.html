@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Типы темпераментов - PsyTest</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./scss/main.css">
+</head>
+
+<body>
+
+    <!-- Навигация -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="logo">
+                    <img src="./images/logo.svg" width="45" height="45" alt="">
+                </div>
+                PsyTest
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./about.html">О методологии</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./types.html">Типы темпераментов</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./test.html">Начать тест</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section types-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <h1 class="hero-title">Четыре темперамента</h1>
+                    <p class="hero-subtitle">
+                        Откройте для себя уникальные особенности каждого типа личности.
+                        Узнайте, что делает сангвиников общительными, холериков - целеустремленными,
+                        флегматиков - спокойными, а меланхоликов - глубокими мыслителями.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="test.html" class="btn-primary">
+                            <i class="bi bi-play-circle me-2"></i>
+                            Узнать свой тип
+                        </a>
+                        <a href="#types" class="btn-outline">
+                            <i class="bi bi-arrow-down me-2"></i>
+                            Узнать больше
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center" data-aos="fade-left" data-aos-delay="200">
+                    <div class="hero-visual">
+                        <div class="floating-cards">
+
+                            <div class="floating-card card-1">
+                                <div class="floating-icon">
+                                    <i class="bi bi-star-fill"></i>
+                                </div>
+                                <span>Сангвиник</span>
+                            </div>
+                            <div class="floating-card card-2">
+                                <div class="floating-icon">
+                                    <i class="bi bi-fire"></i>
+                                </div>
+                                <span>Холерик</span>
+                            </div>
+                            <div class="floating-card card-3">
+                                <div class="floating-icon">
+                                    <i class="bi bi-triangle-fill"></i>
+                                </div>
+                                <span>Флегматик</span>
+                            </div>
+                            <div class="floating-card card-4">
+                                <div class="floating-icon">
+                                    <i class="bi bi-droplet-fill"></i>
+                                </div>
+                                <span>Меланхолик</span>
+                            </div>
+                            <img src="./images/Saly-22.png" height="500" width="400" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Типы темпераментов -->
+    <section id="types" class="section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Классификация темпераментов</h2>
+                <p class="section-subtitle">Исследуйте уникальные характеристики каждого типа личности</p>
+            </div>
+
+            <div class="temperament-grid">
+                <!-- Сангвиник -->
+                <div class="temperament-card" data-type="sanguine" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-glow"></div>
+                    <div class="card-header">
+                        <div class="temperament-icon">
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="temperament-badge">Экстраверт</div>
+                    </div>
+                    <div class="temperament-image-container">
+                        <img src="./images/картинка-сангвиник.png" alt="Сангвиник"
+                            class="temperament-image">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <h3 class="temperament-name">Сангвиник</h3>
+                    <p class="temperament-desc">
+                        Жизнерадостные, общительные и энергичные личности. Легко адаптируются к условиям.
+                    </p>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <div class="stat-bar">
+                                <div class="stat-progress" style="width: 85%"></div>
+                            </div>
+                            <span class="stat-text">85% Социальная активность</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Холерик -->
+                <div class="temperament-card" data-type="choleric" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-glow"></div>
+                    <div class="card-header">
+                        <div class="temperament-icon">
+                            <i class="bi bi-fire"></i>
+                        </div>
+                        <div class="temperament-badge">Лидер</div>
+                    </div>
+                    <div class="temperament-image-container">
+                        <img src="./images/картинка-холерик.png" alt="Холерик"
+                            class="temperament-image">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <h3 class="temperament-name">Холерик</h3>
+                    <p class="temperament-desc">
+                        Страстные, целеустремленные и решительные. Обладают сильной волей.
+                    </p>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <div class="stat-bar">
+                                <div class="stat-progress" style="width: 90%"></div>
+                            </div>
+                            <span class="stat-text">90% Решительность</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Флегматик -->
+                <div class="temperament-card" data-type="phlegmatic" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-glow"></div>
+                    <div class="card-header">
+                        <div class="temperament-icon">
+                            <i class="bi bi-triangle-fill"></i>
+                        </div>
+                        <div class="temperament-badge">Стабильный</div>
+                    </div>
+                    <div class="temperament-image-container">
+                        <img src="./images/картинка-флегматик.png" alt="Флегматик"
+                            class="temperament-image">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <h3 class="temperament-name">Флегматик</h3>
+                    <p class="temperament-desc">
+                        Спокойные, уравновешенные и надежные. Действуют обдуманно.
+                    </p>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <div class="stat-bar">
+                                <div class="stat-progress" style="width: 95%"></div>
+                            </div>
+                            <span class="stat-text">95% Надежность</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Меланхолик -->
+                <div class="temperament-card" data-type="melancholic" data-aos="fade-up" data-aos-delay="400">
+                    <div class="card-glow"></div>
+                    <div class="card-header">
+                        <div class="temperament-icon">
+                            <i class="bi bi-droplet-fill"></i>
+                        </div>
+                        <div class="temperament-badge">Аналитик</div>
+                    </div>
+                    <div class="temperament-image-container">
+                        <img src="./images/картинка-меланхолик.png" alt="Меланхолик"
+                            class="temperament-image">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <h3 class="temperament-name">Меланхолик</h3>
+                    <p class="temperament-desc">
+                        Чуткие, глубокомысленные и творческие личности. Обладают богатым внутренним миром.
+                    </p>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <div class="stat-bar">
+                                <div class="stat-progress" style="width: 90%"></div>
+                            </div>
+                            <span class="stat-text">90% Аналитика</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta-section">
+        <div class="container">
+            <div class="cta-card" data-aos="zoom-in">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <h2 class="cta-title">Определите свой темперамент</h2>
+                        <p class="cta-description">
+                            Пройдите научный тест и получите детализированное описание вашего типа личности
+                            с рекомендациями по развитию и применению сильных сторон
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a href="test.html" class="btn-primary btn-lg">
+                            <i class="bi bi-play-circle me-2"></i>
+                            Начать тестирование
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <div class="footer-logo justify-content-center">
+                <div class="logo">
+                    <img src="./images/logo.svg" width="45" height="45" alt="">
+                </div>
+                PsyTest
+            </div>
+            <p class="text-secondary">
+                © 2025 PsyTest. Научная оценка личности по методологии Айзенка.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
+    </script>
+</body>
+
+</html>

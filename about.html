@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О методологии - PsyTest</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./scss/main.css">
+</head>
+
+<body>
+    
+    <!-- Фоновые звезды -->
+    <div class="stars-bg" id="starsBg"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="logo">
+                    <img src="./images/logo.svg"  width="45"  height="45"  alt="">
+                </div>
+                PsyTest
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./about.html">О методологии</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./types.html">Типы темпераментов</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./test.html">Начать тест</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8" data-aos="fade-up">
+                    <h1 class="hero-title">О методологии</h1>
+                    <p class="hero-subtitle">
+                        Научный подход к пониманию личности через проверенную временем методологию Айзенка. Наш тест
+                        основан на научной методологии Ганса Айзенка — одного из наиболее влиятельных
+                        психологов XX века, чьи работы получили мировое признание в области исследования личности.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- О Гансе Айзенке -->
+    <div class="container">
+        <div class="card about-card mb-5" data-aos="fade-up">
+            <div class="card-body p-5">
+                <h3 class="card-title">О Гансе Айзенке</h3>
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <p class="text-p">
+                            <strong>Ганс Юрген Айзенк (1916-1997)</strong> — немецко-британский психолог,
+                            разработавший одну из наиболее эмпирически обоснованных теорий личности.
+                            Его исследования объединили психологию с биологическими науками, создав
+                            фундамент для современной дифференциальной психологии.
+                        </p>
+                        <p class="text-p">
+                            Айзенк был одним из первых психологов, кто использовал факторный анализ
+                            для идентификации основных черт личности, что позволило создать надежные
+                            и валидные измерительные инструменты.
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="eysenck-portrait">
+                            <img src="./images/Ганс Аизенк.png" width="300"  height="300">
+                            <small class="text-muted mt-2 d-block">Ганс Айзенк (1916-1997)</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Три шкалы -->
+        <div class="methodology-scales mb-5">
+            <h3 class="text-center mb-5" data-aos="fade-up">Три фундаментальные шкалы личности</h3>
+
+            <div class="row g-4">
+                <!-- Экстраверсия -->
+                <div class="col-md-4 d-flex" data-aos="fade-up" data-aos-delay="100">
+                    <div class="scale-card w-100">
+                        <div class="scale-icon">
+                            <i class="bi bi-people-fill" style="font-size: 3rem; color: var(--accent-purple);"></i>
+                        </div>
+                        <h4>Экстраверсия (E)</h4>
+                        <div class="scale-range">
+                            <span class="scale-label">Интроверсия</span>
+                            <div class="scale-bar">
+                                <div class="scale-fill" style="width: 100%"></div>
+                            </div>
+                            <span class="scale-label">Экстраверсия</span>
+                        </div>
+                        <p class="scale-description">
+                            Определяет направленность личности: на внешний мир (экстраверсия)
+                            или внутренний мир (интроверсия). Экстраверты общительны, активны,
+                            тогда как интроверты более сдержанны и самодостаточны.
+                        </p>
+                        <div class="scale-traits">
+                            <span class="trait-badge">Общительность</span>
+                            <span class="trait-badge">Активность</span>
+                            <span class="trait-badge">Импульсивность</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Нейротизм -->
+                <div class="col-md-4 d-flex" data-aos="fade-up" data-aos-delay="200">
+                    <div class="scale-card w-100">
+                        <div class="scale-icon">
+                            <i class="bi bi-heart-pulse-fill" style="font-size: 3rem; color: var(--accent-pink);"></i>
+                        </div>
+                        <h4>Нейротизм (N)</h4>
+                        <div class="scale-range">
+                            <span class="scale-label">Стабильность</span>
+                            <div class="scale-bar">
+                                <div class="scale-fill" style="width: 100%"></div>
+                            </div>
+                            <span class="scale-label">Нейротизм</span>
+                        </div>
+                        <p class="scale-description">
+                            Отражает эмоциональную устойчивость личности. Высокий нейротизм
+                            характеризуется тревожностью, эмоциональной лабильностью,
+                            тогда как низкий — спокойствием и эмоциональной стабильностью.
+                        </p>
+                        <div class="scale-traits">
+                            <span class="trait-badge">Тревожность</span>
+                            <span class="trait-badge">Эмоциональность</span>
+                            <span class="trait-badge">Чувствительность</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Психотизм -->
+                <div class="col-md-4 d-flex" data-aos="fade-up" data-aos-delay="300">
+                    <div class="scale-card w-100">
+                        <div class="scale-icon">
+                            <i class="bi bi-lightning-charge-fill" style="font-size: 3rem; color: var(--accent-blue);"></i>
+                        </div>
+                        <h4>Психотизм (P)</h4>
+                        <div class="scale-range">
+                            <span class="scale-label">Контроль</span>
+                            <div class="scale-bar">
+                                <div class="scale-fill" style="width: 100%"></div>
+                            </div>
+                            <span class="scale-label">Психотизм</span>
+                        </div>
+                        <p class="scale-description">
+                            Показывает склонность к импульсивности, агрессии и асоциальному
+                            поведению. Низкие значения свидетельствуют о эмпатии и самоконтроле,
+                            высокие — о склонности к риску и нонконформизму.
+                        </p>
+                        <div class="scale-traits">
+                            <span class="trait-badge">Импульсивность</span>
+                            <span class="trait-badge">Творчество</span>
+                            <span class="trait-badge">Нонконформизм</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Научная обоснованность -->
+        <div class="card about-card mb-5" data-aos="fade-up">
+            <div class="card-body p-5">
+                <h3 class="card-title"><i class="bi bi-clipboard-data me-3"></i>Научная обоснованность метода</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="advantage-content">
+                            <h5><i class="bi bi-check-circle-fill me-2" style="color: var(--accent-purple);"></i>Эмпирическая валидность</h5>
+                        </div>
+                        <p class="text-p">
+                            Методология Айзенка прошла многочисленные проверки на надежность
+                            и валидность в различных культурных средах. Коэффициент надежности
+                            теста составляет 0.85-0.90 при ретестировании.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="advantage-content">
+                            <h5><i class="bi bi-bar-chart-fill me-2" style="color: var(--accent-purple);"></i>Факторная обоснованность</h5>
+                        </div>
+                        <p class="text-p">
+                            Трехфакторная модель подтверждена множеством независимых исследований
+                            с использованием факторного анализа на выборках более 50,000 человек.
+                        </p>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="advantage-content">
+                            <h5><i class="bi bi-globe me-2" style="color: var(--accent-purple);"></i>Кросс-культурная устойчивость</h5>
+                        </div>
+                        <p class="text-p">
+                            Структура личности по Айзенку демонстрирует устойчивость across
+                            различных культур и языковых групп, что подтверждает ее универсальность.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="advantage-content">
+                            <h5><i class="bi bi-briefcase-fill me-2" style="color: var(--accent-purple);"></i>Практическое применение</h5>
+                        </div>
+                        <p class="text-p">
+                            Методика широко используется в клинической психологии, профориентации,
+                            образовании и организационной психологии по всему миру.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Преимущества нашего теста -->
+        <div class="advantages-section">
+            <h3 class="text-center mb-4" data-aos="fade-up">Преимущества нашего теста</h3>
+            <div class="row g-4">
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="advantage-item">
+                        <div class="advantage-icon">
+                            <i class="bi bi-clipboard-check-fill"></i>
+                        </div>
+                        <div class="advantage-content">
+                            <h5>Научная основа</h5>
+                            <p>Используем оригинальные вопросы из опросника Айзенка EPQ-R</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="advantage-item">
+                        <div class="advantage-icon">
+                            <i class="bi bi-lightning-fill"></i>
+                        </div>
+                        <div class="advantage-content">
+                            <h5>Мгновенные результаты</h5>
+                            <p>Автоматический расчет и детализированный отчет</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="advantage-item">
+                        <div class="advantage-icon">
+                            <i class="bi bi-shield-lock-fill"></i>
+                        </div>
+                        <div class="advantage-content">
+                            <h5>Конфиденциальность</h5>
+                            <p>Ваши данные не сохраняются и не передаются третьим лицам</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="advantage-item">
+                        <div class="advantage-icon">
+                            <i class="bi bi-gift-fill"></i>
+                        </div>
+                        <div class="advantage-content">
+                            <h5>Бесплатно и доступно</h5>
+                            <p>Проходите тест неограниченное количество раз без оплаты</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="section" style="background: var(--darker-bg);">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8" data-aos="fade-up">
+                    <h2 class="section-title">Готовы узнать себя лучше?</h2>
+                    <p class="hero-subtitle">
+                        Пройдите научно обоснованный тест и получите детализированное описание вашего темперамента
+                    </p>
+                    <a href="test.html" class="btn-primary">
+                        <i class="bi bi-play-circle me-2"></i>Начать тестирование
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <div class="footer-logo justify-content-center">
+                <div class="logo">
+                    <img src="./images/logo.svg"  width="45"  height="45"  alt="">
+                </div>
+                PsyTest
+            </div>
+            <p class="text-secondary">
+                © 2025 PsyTest. Научная оценка личности по методологии Айзенка.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
+    </script>
+</body>
+
+</html>

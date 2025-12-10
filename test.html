@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsyTest - Тест Айзенка</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./scss/main.css">
+</head>
+
+<body>
+    <!-- Фоновые звезды -->
+    <div id="starsBg" class="stars-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="logo">
+                    <img src="./images/logo.svg" width="45" height="45" alt="">
+                </div>
+                PsyTest
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./about.html">О методологии</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./types.html">Типы темпераментов</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./test.html">Начать тест</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Контейнер теста -->
+    <div class="test-container">
+        <!-- Контейнер вопросов (показывается во время теста) -->
+        <div id="test-content">
+            <!-- Заголовок теста -->
+            <div class="test-header">
+                <h1 class="test-title">Тест темперамента по Айзенку</h1>
+                <p class="test-description">Ответьте на 23 вопроса для определения вашего типа темперамента</p>
+                <div class="progress-text">Прогресс: <span id="answered-count">0</span>/23 (<span
+                        id="progress-percent">0</span>%)</div>
+            </div>
+
+            <!-- Прогресс бар -->
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span>Вопрос <span id="current-question">1</span> из 23</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Контейнер вопросов -->
+            <div id="questions-container">
+                <!-- Вопросы будут добавляться через JavaScript -->
+            </div>
+
+            <!-- Навигационные кнопки -->
+            <div class="navigation-buttons">
+                <button id="prev-btn" class="btn-outline" onclick="prevQuestion()">
+                    <i class="bi bi-arrow-left me-2"></i>Назад
+                </button>
+                <button id="next-btn" class="btn-primary" onclick="nextQuestion()">
+                    Далее<i class="bi bi-arrow-right ms-2"></i>
+                </button>
+                <button id="finish-btn" class="btn-primary hidden" onclick="finishTest()">
+                    <i class="bi bi-check-circle me-2"></i>Завершить тест
+                </button>
+            </div>
+        </div>
+
+        <!-- Контейнер результата (скрыт до завершения теста) -->
+        <div id="result-content" class="hidden">
+            <div class="result-page">
+                <div class="result-header">
+                    <h1 class="result-title">Ваш результат</h1>
+                    <p class="result-subtitle">Поздравляем! Вы завершили тест на определение темперамента</p>
+                </div>
+
+                <div class="temperament-result-main">
+                    <div class="result-card">
+                        <div class="result-badge" id="result-badge">
+                            <i id="result-icon" class="result-icon"></i>
+                        </div>
+                        <h2 class="result-name" id="result-name">Загрузка...</h2>
+                        <div class="result-type" id="result-type">Определение типа</div>
+
+                        <div class="result-stats">
+                            <div class="stat-circle">
+                                <div class="stat-value" id="stat-e">0</div>
+                                <div class="stat-label">Экстраверсия</div>
+                            </div>
+                            <div class="stat-circle">
+                                <div class="stat-value" id="stat-n">0</div>
+                                <div class="stat-label">Нейротизм</div>
+                            </div>
+                            <div class="stat-circle">
+                                <div class="stat-value" id="stat-p">0</div>
+                                <div class="stat-label">Психотизм</div>
+                            </div>
+                        </div>
+
+                        <div class="scores-container">
+                            <div class="score-item">
+                                <span class="score-label">Экстраверсия (E):</span>
+                                <span class="score-value" id="score-E">0</span>
+                            </div>
+                            <div class="score-item">
+                                <span class="score-label">Нейротизм (N):</span>
+                                <span class="score-value" id="score-N">0</span>
+                            </div>
+                            <div class="score-item">
+                                <span class="score-label">Психотизм (P):</span>
+                                <span class="score-value" id="score-P">0</span>
+                            </div>
+                        </div>
+
+                        <div class="result-description-card">
+                            <h4><i class="bi bi-file-text me-2"></i>Описание вашего темперамента</h4>
+                            <p class="result-description" id="result-description">
+                                Загрузка описания...
+                            </p>
+                        </div>
+
+                        <div class="traits-section">
+                            <h4><i class="bi bi-star me-2"></i>Ключевые черты характера</h4>
+                            <div class="result-traits" id="result-traits">
+                                <!-- Черты характера добавляются через JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="detailed-analysis">
+                            <h4><i class="bi bi-graph-up me-2"></i>Детальный анализ</h4>
+                            <div class="analysis-grid">
+                                <div class="analysis-card">
+                                    <div class="analysis-icon">
+                                        <i class="bi bi-lightning-fill"></i>
+                                    </div>
+                                    <h5>Сильные стороны</h5>
+                                    <ul id="strengths-list">
+                                        <!-- Сильные стороны добавляются через JavaScript -->
+                                    </ul>
+                                </div>
+                                <div class="analysis-card">
+                                    <div class="analysis-icon">
+                                        <i class="bi bi-star-fill"></i>
+                                    </div>
+                                    <h5>Рекомендации</h5>
+                                    <ul id="recommendations-list">
+                                        <!-- Рекомендации добавляются через JavaScript -->
+                                    </ul>
+                                </div>
+                                <div class="analysis-card">
+                                    <div class="analysis-icon">
+                                        <i class="bi bi-briefcase-fill"></i>
+                                    </div>
+                                    <h5>Профессиональная сфера</h5>
+                                    <ul id="professions-list">
+                                        <!-- Профессии добавляются через JavaScript -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-actions">
+                            <button class="btn-primary restart-btn" onclick="restartTest()">
+                                <i class="bi bi-arrow-repeat me-2"></i>
+                                Пройти заново
+                            </button>
+                            <button class="btn-outline home-btn" onclick="goToHome()">
+                                <i class="bi bi-house me-2"></i>
+                                На главную
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

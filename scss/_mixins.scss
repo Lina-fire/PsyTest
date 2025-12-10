@@ -1,0 +1,90 @@
+// ==================== МИКСИНЫ ====================
+
+// Миксин для медиазапросов
+@mixin respond-to($breakpoint) {
+    @if $breakpoint == mobile {
+        @media (max-width: $breakpoint-mobile) { @content; }
+    } @else if $breakpoint == tablet {
+        @media (max-width: $breakpoint-tablet) { @content; }
+    } @else if $breakpoint == desktop {
+        @media (max-width: $breakpoint-desktop) { @content; }
+    } @else if $breakpoint == large {
+        @media (min-width: $breakpoint-large) { @content; }
+    }
+}
+
+// Миксин для флекс-центра
+@mixin flex-center($direction: row) {
+    display: flex;
+    flex-direction: $direction;
+    align-items: center;
+    justify-content: center;
+}
+
+// Миксин для позиционирования по центру
+@mixin absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+// Миксин для кнопок
+@mixin button-style($bg-color, $text-color: white, $hover-color: null) {
+    background: $bg-color;
+    color: $text-color;
+    padding: 12px 12px;
+    border-radius: $border-radius-sm;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba($accent-purple, 0.4);
+        color: $text-color;
+        
+        @if $hover-color {
+            background: $hover-color;
+        }
+    }
+}
+
+// Миксин для карточек
+@mixin card-style {
+    background: $card-bg;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: $shadow-md;
+    }
+}
+
+// Миксин для градиентного текста
+@mixin gradient-text($gradient: $gradient-purple-blue) {
+    background: $gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+// Миксин для адаптивного шрифта
+@mixin responsive-font($min-size, $max-size) {
+    font-size: clamp(#{$min-size}px, #{$max-size}px, 5vw);
+}
+
+// Миксин для звездного фона
+@mixin stars-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}

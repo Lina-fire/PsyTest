@@ -1,0 +1,94 @@
+// Базовые стили
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+// Фоновые звезды
+.stars-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+// Общие анимации
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes floatIn {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+// Скрытие элементов
+.hidden {
+    display: none !important;
+}
+
+// Гарантируем видимость всех элементов
+.section-header,
+.temperament-grid,
+.cta-section,
+.footer {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.section-header {
+    opacity: 1;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+// Убираем любые возможные скрывающие стили
+[style*="opacity: 0"] {
+    opacity: 1 !important;
+}
+
+[style*="display: none"] {
+    display: block !important;
+}
+
+[style*="visibility: hidden"] {
+    visibility: visible !important;
+}
