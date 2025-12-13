@@ -859,8 +859,10 @@ small {
 .temperament-image {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  -o-object-fit: contain;
+     object-fit: contain;
+  -o-object-position: center center;
+     object-position: center center;
   transition: transform 0.4s ease;
 }
 
@@ -1777,6 +1779,10 @@ small {
   .hero-actions {
     display: grid;
   }
+  .eysenck-image {
+    width: 200px;
+    height: 200px;
+  }
   .cta-main-card {
     padding: 3rem 2rem;
   }
@@ -1808,6 +1814,14 @@ small {
 @media (max-width: 768px) {
   .section {
     padding: 60px 0;
+  }
+  .eysenck-image {
+    width: 200px;
+    height: 200px;
+  }
+  .eysenck-portrait {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
   }
   h1 {
     font-size: 36px;
@@ -1922,7 +1936,8 @@ small {
   .result-card {
     padding: 2rem 1.5rem;
   }
-  .img-index1, .img-index {
+  .img-index1,
+  .img-index {
     display: none;
   }
   .result-stats {
@@ -1938,7 +1953,8 @@ small {
     flex-direction: column;
     align-items: center;
   }
-  .restart-btn, .share-btn {
+  .restart-btn,
+  .share-btn {
     width: 100%;
     max-width: 250px;
     justify-content: center;
@@ -1954,7 +1970,8 @@ small {
   .hero-actions {
     flex-direction: column;
   }
-  .img-about, .about-img {
+  .img-about,
+  .about-img {
     display: none;
   }
   .science-image-container {
@@ -2010,13 +2027,36 @@ small {
     margin-left: 0;
     text-align: center;
   }
+  .advantage-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .advantage-icon {
+    display: flex !important;
+    justify-content: center !important;
+    margin-bottom: 15px !important;
+  }
+  .advantage-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
 }
 @media (max-width: 480px) {
+  .hero-title {
+    padding-top: 1.5rem;
+  }
   .temperament-grid {
     grid-template-columns: 1fr;
     max-width: 300px;
     margin-left: auto;
     margin-right: auto;
+  }
+  .eysenck-image {
+    width: 180px;
+    height: 180px;
   }
   .temperament-card {
     padding: 1rem;
@@ -2033,7 +2073,8 @@ small {
   .text-muted {
     display: none;
   }
-  .img-index1, .img-index {
+  .img-index1,
+  .img-index {
     display: none;
   }
   .about-img {
@@ -2088,16 +2129,54 @@ small {
     bottom: 8%;
     right: 3%;
   }
+  .advantage-item {
+    padding: 20px 15px !important;
+  }
+  .advantage-icon i {
+    font-size: 2.5rem !important;
+  }
+  .advantage-content h5 {
+    font-size: 1.3rem !important;
+    margin-bottom: 10px !important;
+  }
+  .advantage-content p {
+    font-size: 0.95rem !important;
+    line-height: 1.4 !important;
+  }
 }
 @media (max-width: 360px) {
-  .btn-primary, .btn-outline {
+  .hero-title {
+    padding-top: 1.5rem;
+  }
+  .cta-feature {
+    display: none;
+  }
+  .btn-primary,
+  .btn-outline {
     padding: 10px 20px;
     margin-bottom: 1rem;
+  }
+  .advantage-item {
+    padding: 15px 10px !important;
+  }
+  .advantage-icon i {
+    font-size: 2.2rem !important;
+  }
+  .advantage-content h5 {
+    font-size: 1.2rem !important;
+  }
+  .advantage-content p {
+    font-size: 0.9rem !important;
+  }
+  .eysenck-image {
+    width: 150px;
+    height: 150px;
   }
   .text-muted {
     display: none;
   }
-  .feature-card, .temperament-card {
+  .feature-card,
+  .temperament-card {
     padding: 1.5rem 1rem;
   }
   .result-card {
