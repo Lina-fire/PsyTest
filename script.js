@@ -170,6 +170,11 @@ function initializeTest() {
     updateNavigation();
     createStars();
     
+    // Добавляем обработчики событий на кнопки
+    prevButton.addEventListener('click', prevQuestion);
+    nextButton.addEventListener('click', nextQuestion);
+    finishButton.addEventListener('click', finishTest);
+    
     // Добавляем обработчики клавиш
     document.addEventListener('keydown', handleKeyPress);
 }
@@ -245,8 +250,11 @@ function setAnswer(index, value) {
 
 // Следующий вопрос
 function nextQuestion() {
+    console.log("Next button clicked, current question:", currentQuestionIndex);
+    
     // Проверяем, выбран ли ответ на текущий вопрос
     if (answers[currentQuestionIndex] === null) {
+        console.log("No answer selected, showing error");
         showError();
         return;
     }
@@ -261,6 +269,8 @@ function nextQuestion() {
 
 // Предыдущий вопрос
 function prevQuestion() {
+    console.log("Prev button clicked");
+    
     // Сбрасываем ошибку при переходе назад
     removeError();
     
@@ -271,6 +281,7 @@ function prevQuestion() {
 
 // Показать ошибку
 function showError() {
+    console.log("Showing error for question:", currentQuestionIndex);
     hasError = true;
     
     // Добавляем класс ошибки к карточке вопроса
@@ -329,9 +340,6 @@ function showError() {
         block: 'center',
         inline: 'nearest'
     });
-    
-    // Воспроизводим звук ошибки
-    playErrorSound();
 }
 
 // Убрать ошибку
@@ -360,32 +368,6 @@ function removeError() {
     // Убираем анимацию с кнопки
     if (nextButton) {
         nextButton.classList.remove('error');
-    }
-}
-
-// Воспроизвести звук ошибки
-function playErrorSound() {
-    try {
-        // Создаем простой звук ошибки
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.2);
-        
-        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-        
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + 0.2);
-    } catch (e) {
-        // Если AudioContext не поддерживается, просто игнорируем
-        console.log("AudioContext не поддерживается в этой среде");
     }
 }
 
@@ -864,6 +846,15 @@ function createStars() {
         starsBg.appendChild(star);
     }
 }
+
+// Экспортируем функции в глобальную область видимости
+window.nextQuestion = nextQuestion;
+window.prevQuestion = prevQuestion;
+window.finishTest = finishTest;
+window.restartTest = restartTest;
+window.goToHome = goToHome;
+window.setAnswer = setAnswer;
+window.shareResult = shareResult;
 
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function () {

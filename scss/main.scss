@@ -1,14 +1,15 @@
-// Главный файл импорта
 @import 'variables';
 @import 'base';
-@import 'typography';
 @import 'layout';
+@import 'typography';
+@import 'animations';
+@import 'mixins';
 @import 'components';
 @import 'hero';
+@import 'home';
 @import 'temperament';
 @import 'test';
 @import 'result';
 @import 'about';
-@import 'home';
-@import 'responsive';
 @import 'error-styles';
+@import 'responsive';

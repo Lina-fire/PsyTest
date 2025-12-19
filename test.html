@@ -77,13 +77,13 @@
 
             <!-- Навигационные кнопки -->
             <div class="navigation-buttons">
-                <button id="prev-btn" class="btn-outline" onclick="prevQuestion()">
+                <button id="prev-btn" class="btn-outline">
                     <i class="bi bi-arrow-left me-2"></i>Назад
                 </button>
-                <button id="next-btn" class="btn-primary" onclick="nextQuestion()">
+                <button id="next-btn" class="btn-primary">
                     Далее<i class="bi bi-arrow-right ms-2"></i>
                 </button>
-                <button id="finish-btn" class="btn-primary hidden" onclick="finishTest()">
+                <button id="finish-btn" class="btn-primary hidden">
                     <i class="bi bi-check-circle me-2"></i>Завершить тест
                 </button>
             </div>
@@ -190,6 +190,10 @@
                             <button class="btn-outline home-btn" onclick="goToHome()">
                                 <i class="bi bi-house me-2"></i>
                                 На главную
+                            </button>
+                            <button class="btn-primary share-btn" onclick="shareResult()">
+                                <i class="bi bi-share me-2"></i>
+                                Поделиться
                             </button>
                         </div>
                     </div>
