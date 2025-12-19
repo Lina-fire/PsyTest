@@ -746,27 +746,6 @@ function goToHome() {
     window.location.href = 'index.html';
 }
 
-// Поделиться результатом
-function shareResult() {
-    const resultName = document.getElementById('result-name').textContent;
-    const resultType = document.getElementById('result-type').textContent;
-    
-    const shareText = `🎯 Мой результат теста на темперамент: ${resultName} (${resultType})\n\n📊 Пройти тест и узнать свой тип: ${window.location.origin}`;
-
-    if (navigator.share) {
-        navigator.share({
-            title: 'Мой результат теста на темперамент',
-            text: shareText,
-            url: window.location.href
-        }).catch(err => {
-            console.log('Ошибка при попытке поделиться:', err);
-            fallbackShare(shareText);
-        });
-    } else {
-        fallbackShare(shareText);
-    }
-}
-
 // Фолбэк для шеринга
 function fallbackShare(text) {
     navigator.clipboard.writeText(text).then(() => {
