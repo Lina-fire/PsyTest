@@ -1,4 +1,3 @@
-// Вопросы теста Айзенка
 const questions = [
     // Шкала экстраверсии-интроверсии (E)
     { text: "Вы обычно оживлены и активны в компании?", dimension: "E", positive: true },
@@ -30,7 +29,6 @@ const questions = [
     { text: "Вы часто испытываете чувство вины?", dimension: "P", positive: true }
 ];
 
-// Данные для детального анализа каждого темперамента
 const temperamentData = {
     "Сангвиник": {
         color: "#ff6b6b",
@@ -126,23 +124,23 @@ const temperamentData = {
     }
 };
 
-// Глобальные переменные
+
 let currentQuestionIndex = 0;
 let answers = new Array(questions.length).fill(null);
 let hasError = false;
 let isLoading = false;
 
-// DOM элементы
+
 let questionsContainer, testContent, resultContent;
 let currentQuestionElement, answeredCountElement, progressPercentElement, progressFillElement;
 let prevButton, nextButton, finishButton;
 let progressContainer;
 
-// Инициализация теста
+
 function initializeTest() {
     console.log("Инициализация теста...");
 
-    // Инициализация DOM элементов
+   
     questionsContainer = document.getElementById('questions-container');
     testContent = document.getElementById('test-content');
     resultContent = document.getElementById('result-content');
@@ -155,13 +153,13 @@ function initializeTest() {
     finishButton = document.getElementById('finish-btn');
     progressContainer = document.querySelector('.progress-container');
 
-    // Проверка существования элементов
+  
     if (!questionsContainer || !testContent || !resultContent) {
         console.error("Не найдены необходимые DOM элементы");
         return;
     }
 
-    // Скрываем результат, показываем тест
+    
     testContent.classList.remove('hidden');
     resultContent.classList.add('hidden');
 
@@ -170,21 +168,17 @@ function initializeTest() {
     updateNavigation();
     createStars();
     
-    // Добавляем обработчики событий на кнопки
     prevButton.addEventListener('click', prevQuestion);
     nextButton.addEventListener('click', nextQuestion);
     finishButton.addEventListener('click', finishTest);
     
-    // Добавляем обработчики клавиш
     document.addEventListener('keydown', handleKeyPress);
 }
 
-// Показать вопрос
 function showQuestion(index) {
     currentQuestionIndex = index;
     const question = questions[index];
     
-    // Удаляем ошибку при переходе на новый вопрос
     removeError();
 
     const questionHTML = `
@@ -216,22 +210,18 @@ function showQuestion(index) {
     updateProgress();
     updateNavigation();
     
-    // Показываем/скрываем ошибку
     if (hasError && answers[currentQuestionIndex] === null) {
         showError();
     }
 }
 
-// Установить ответ
 function setAnswer(index, value) {
     if (index >= 0 && index < questions.length) {
         answers[index] = value;
         console.log(`Ответ на вопрос ${index + 1}: ${value}`);
         
-        // Убираем ошибку при выборе ответа
         removeError();
 
-        // Обновляем визуальное состояние
         const labels = document.querySelectorAll(`input[name="q${index}"]`);
         labels.forEach(input => {
             const label = input.parentElement;
@@ -252,14 +242,14 @@ function setAnswer(index, value) {
 function nextQuestion() {
     console.log("Next button clicked, current question:", currentQuestionIndex);
     
-    // Проверяем, выбран ли ответ на текущий вопрос
+    // выбран ли ответ на текущий вопрос
     if (answers[currentQuestionIndex] === null) {
         console.log("No answer selected, showing error");
         showError();
         return;
     }
     
-    // Сбрасываем флаг ошибки
+    // Сброс ошибки
     hasError = false;
     
     if (currentQuestionIndex < questions.length - 1) {
@@ -271,7 +261,7 @@ function nextQuestion() {
 function prevQuestion() {
     console.log("Prev button clicked");
     
-    // Сбрасываем ошибку при переходе назад
+    // Сброс ошибки при переходе назад
     removeError();
     
     if (currentQuestionIndex > 0) {
@@ -279,17 +269,17 @@ function prevQuestion() {
     }
 }
 
-// Показать ошибку
+// Показ ошибки
 function showError() {
     console.log("Showing error for question:", currentQuestionIndex);
     hasError = true;
     
-    // Добавляем класс ошибки к карточке вопроса
+    // Добавление класса ошибки к карточке вопроса
     const questionCard = document.getElementById(`question-card-${currentQuestionIndex}`);
     if (questionCard) {
         questionCard.classList.add('error');
         
-        // Добавляем двойную анимацию для лучшего эффекта
+        // Добавление двойной анимации для лучшего эффекта
         setTimeout(() => {
             questionCard.classList.remove('error');
             setTimeout(() => {
@@ -298,7 +288,7 @@ function showError() {
         }, 50);
     }
     
-    // Добавляем класс ошибки к радиокнопкам
+    // Добавление класса ошибки к радиокнопкам
     const labels = document.querySelectorAll(`input[name="q${currentQuestionIndex}"]`);
     labels.forEach(input => {
         const label = input.parentElement;
@@ -307,18 +297,18 @@ function showError() {
         }
     });
     
-    // Показываем сообщение об ошибке
+    //  сообщение об ошибке
     const errorMessage = document.getElementById(`error-${currentQuestionIndex}`);
     if (errorMessage) {
         errorMessage.classList.add('show');
         
-        // Автоматически скрываем ошибку через 5 секунд
+        // Автоматическое скрытие ошибки через 5 секунд
         setTimeout(() => {
             errorMessage.classList.remove('show');
         }, 5000);
     }
     
-    // Добавляем анимацию к кнопке далее
+    // Добавление анимации к кнопке далее
     if (nextButton) {
         nextButton.classList.add('error');
         setTimeout(() => {
@@ -326,7 +316,7 @@ function showError() {
         }, 1500);
     }
     
-    // Добавляем индикацию ошибки в прогресс баре
+    // Добавление индикации ошибки в прогресс баре
     if (progressContainer) {
         progressContainer.classList.add('has-error');
         setTimeout(() => {
@@ -334,7 +324,7 @@ function showError() {
         }, 3000);
     }
     
-    // Прокручиваем к ошибке
+    // Прокрутка к ошибке
     questionCard?.scrollIntoView({ 
         behavior: 'smooth', 
         block: 'center',
@@ -342,36 +332,35 @@ function showError() {
     });
 }
 
-// Убрать ошибку
+
 function removeError() {
     hasError = false;
     
-    // Убираем класс ошибки с карточки вопроса
+   
     const questionCard = document.getElementById(`question-card-${currentQuestionIndex}`);
     if (questionCard) {
         questionCard.classList.remove('error');
     }
     
-    // Убираем класс ошибки с радиокнопок
+    
     const labels = document.querySelectorAll(`input[name="q${currentQuestionIndex}"]`);
     labels.forEach(input => {
         const label = input.parentElement;
         label.classList.remove('error');
     });
     
-    // Скрываем сообщение об ошибке
+    // скрытие сообщения об ошибке
     const errorMessage = document.getElementById(`error-${currentQuestionIndex}`);
     if (errorMessage) {
         errorMessage.classList.remove('show');
     }
     
-    // Убираем анимацию с кнопки
+    
     if (nextButton) {
         nextButton.classList.remove('error');
     }
 }
 
-// Обновить навигацию
 function updateNavigation() {
     if (prevButton) {
         prevButton.disabled = currentQuestionIndex === 0;
@@ -488,9 +477,8 @@ function validateAllQuestions() {
     return errors;
 }
 
-// Показать модальное окно с ошибкой валидации
 function showValidationErrorModal(unansweredQuestions) {
-    // Создаем модальное окно с ошибкой
+    
     const errorModal = document.createElement('div');
     errorModal.className = 'error-modal';
     
@@ -524,15 +512,13 @@ function showValidationErrorModal(unansweredQuestions) {
     `;
     
     document.body.appendChild(errorModal);
-    
-    // Закрытие по клику вне модального окна
+
     errorModal.addEventListener('click', function(e) {
         if (e.target === this) {
             this.remove();
         }
     });
     
-    // Закрытие по Escape
     document.addEventListener('keydown', function closeModal(e) {
         if (e.key === 'Escape') {
             errorModal.remove();
@@ -540,7 +526,6 @@ function showValidationErrorModal(unansweredQuestions) {
         }
     });
     
-    // Автоматическое удаление через 15 секунд
     setTimeout(() => {
         if (errorModal.parentElement) {
             errorModal.remove();
@@ -548,7 +533,6 @@ function showValidationErrorModal(unansweredQuestions) {
     }, 15000);
 }
 
-// Подсчитать баллы
 function calculateScores() {
     const scores = { E: 0, N: 0, P: 0 };
 
@@ -564,7 +548,7 @@ function calculateScores() {
     return scores;
 }
 
-// Определить темперамент по Айзенку
+// Определение темперамента по Айзенку
 function determineTemperament(scores) {
     const isExtrovert = scores.E >= 5;
     const isNeurotic = scores.N >= 5;
@@ -600,26 +584,26 @@ function determineTemperament(scores) {
     }
 }
 
-// Показать результат
+// Показ результата
 function showResult(result, scores) {
     const data = temperamentData[result.name] || temperamentData["Сангвиник"];
 
-    // Обновляем основную информацию
+    // Обновление основной инф
     document.getElementById('result-name').textContent = result.name;
     document.getElementById('result-type').textContent = result.type;
     document.getElementById('result-description').textContent = result.description;
 
-    // Обновляем баллы
+    // Обновл баллов
     document.getElementById('score-E').textContent = scores.E;
     document.getElementById('score-N').textContent = scores.N;
     document.getElementById('score-P').textContent = scores.P;
 
-    // Обновляем статистику
+    // Обновление статистики
     document.getElementById('stat-e').textContent = scores.E;
     document.getElementById('stat-n').textContent = scores.N;
     document.getElementById('stat-p').textContent = scores.P;
 
-    // Обновляем иконку и цвет
+    // Обновление иконки и цвета
     const resultBadge = document.getElementById('result-badge');
     const resultIcon = document.getElementById('result-icon');
     
@@ -642,7 +626,7 @@ function showResult(result, scores) {
             break;
     }
 
-    // Обновляем черты характера
+    // Обновление черт характера
     const traitsContainer = document.getElementById('result-traits');
     if (traitsContainer) {
         traitsContainer.innerHTML = result.traits.map(trait =>
@@ -650,11 +634,10 @@ function showResult(result, scores) {
         ).join('');
     }
 
-    // Обновляем детальный анализ
+    // Обновление детального анализа
     updateDetailedAnalysis(data);
 }
 
-// Обновить детальный анализ
 function updateDetailedAnalysis(data) {
     const strengthsList = document.getElementById('strengths-list');
     const recommendationsList = document.getElementById('recommendations-list');
@@ -719,25 +702,25 @@ function handleKeyPress(e) {
 
 // Начать тест заново
 function restartTest() {
-    // Сбрасываем ответы
+    // Сброс ответов
     answers = new Array(questions.length).fill(null);
     currentQuestionIndex = 0;
     hasError = false;
     isLoading = false;
     
-    // Показываем тест, скрываем результат
+    // скрытие результата
     testContent.classList.remove('hidden');
     resultContent.classList.add('hidden');
     
-    // Обновляем интерфейс
+    // Обновление интерфейса
     showQuestion(currentQuestionIndex);
     updateProgress();
     updateNavigation();
     
-    // Добавляем обработчики клавиш
+    // Добавл обраб клавиш
     document.addEventListener('keydown', handleKeyPress);
     
-    // Прокручиваем к началу теста
+    // Прокрутка к началу
     testContent.scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -766,7 +749,7 @@ function fallbackShare(text) {
     });
 }
 
-// Показать уведомление о копировании
+
 function showShareNotification() {
     const notification = document.createElement('div');
     notification.className = 'share-notification';
@@ -778,7 +761,7 @@ function showShareNotification() {
     `;
     document.body.appendChild(notification);
     
-    // Автоматически скрываем через 3 секунды
+    
     setTimeout(() => {
         notification.style.animation = 'slideOut 0.3s ease';
         notification.style.opacity = '0';
@@ -787,7 +770,7 @@ function showShareNotification() {
         }, 300);
     }, 3000);
     
-    // Добавляем стиль для исчезновения
+    // стиль для исчезновения
     if (!document.querySelector('#share-notification-styles')) {
         const style = document.createElement('style');
         style.id = 'share-notification-styles';
@@ -826,7 +809,7 @@ function createStars() {
     }
 }
 
-// Экспортируем функции в глобальную область видимости
+// Экспорт функций в глобальную область видимости
 window.nextQuestion = nextQuestion;
 window.prevQuestion = prevQuestion;
 window.finishTest = finishTest;
