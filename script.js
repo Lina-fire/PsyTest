@@ -140,10 +140,60 @@ let progressContainer;
 function initializeTest() {
     console.log("Инициализация теста...");
 
+    // Сначала попробуем найти элементы с отладочной информацией
+    console.log("Поиск элементов DOM:");
+    const testContentEl = document.getElementById('test-content');
+    const resultContentEl = document.getElementById('result-content');
+    const questionsContainerEl = document.getElementById('questions-container');
+    
+    console.log("test-content найден:", !!testContentEl);
+    console.log("result-content найден:", !!resultContentEl);
+    console.log("questions-container найден:", !!questionsContainerEl);
    
-    questionsContainer = document.getElementById('questions-container');
-    testContent = document.getElementById('test-content');
-    resultContent = document.getElementById('result-content');
+    questionsContainer = questionsContainerEl;
+    testContent = testContentEl;
+    resultContent = resultContentEl;
+    
+    // Если основные элементы не найдены, пробуем найти их по-другому
+    if (!questionsContainer || !testContent || !resultContent) {
+        console.error("Не найдены необходимые DOM элементы");
+        console.error("Попытка найти через querySelector...");
+        
+        questionsContainer = document.querySelector('#questions-container');
+        testContent = document.querySelector('#test-content');
+        resultContent = document.querySelector('#result-content');
+        
+        if (!questionsContainer || !testContent || !resultContent) {
+            console.error("Элементы все еще не найдены. Проверьте HTML структуру.");
+            
+            // Покажем сообщение об ошибке
+            setTimeout(() => {
+                const body = document.body;
+                if (body) {
+                    body.innerHTML = `
+                        <div style="padding: 40px; text-align: center; font-family: Arial, sans-serif;">
+                            <h2 style="color: #ff6b6b;">Ошибка загрузки теста</h2>
+                            <p>Не удалось загрузить элементы теста. Пожалуйста, обновите страницу.</p>
+                            <button onclick="location.reload()" style="
+                                background: #8b5cf6; 
+                                color: white; 
+                                border: none; 
+                                padding: 10px 20px; 
+                                border-radius: 5px; 
+                                cursor: pointer;
+                                margin-top: 20px;
+                            ">
+                                Обновить страницу
+                            </button>
+                        </div>
+                    `;
+                }
+            }, 100);
+            return;
+        }
+    }
+
+    // Находим остальные элементы
     currentQuestionElement = document.getElementById('current-question');
     answeredCountElement = document.getElementById('answered-count');
     progressPercentElement = document.getElementById('progress-percent');
@@ -152,13 +202,8 @@ function initializeTest() {
     nextButton = document.getElementById('next-btn');
     finishButton = document.getElementById('finish-btn');
     progressContainer = document.querySelector('.progress-container');
-
-  
-    if (!questionsContainer || !testContent || !resultContent) {
-        console.error("Не найдены необходимые DOM элементы");
-        return;
-    }
-
+    
+    console.log("Все элементы найдены, продолжаем инициализацию...");
     
     testContent.classList.remove('hidden');
     resultContent.classList.add('hidden');
@@ -168,11 +213,13 @@ function initializeTest() {
     updateNavigation();
     createStars();
     
-    prevButton.addEventListener('click', prevQuestion);
-    nextButton.addEventListener('click', nextQuestion);
-    finishButton.addEventListener('click', finishTest);
+    if (prevButton) prevButton.addEventListener('click', prevQuestion);
+    if (nextButton) nextButton.addEventListener('click', nextQuestion);
+    if (finishButton) finishButton.addEventListener('click', finishTest);
     
     document.addEventListener('keydown', handleKeyPress);
+    
+    console.log("Тест успешно инициализирован!");
 }
 
 function showQuestion(index) {
@@ -205,8 +252,14 @@ function showQuestion(index) {
         </div>
     `;
 
-    questionsContainer.innerHTML = questionHTML;
-    currentQuestionElement.textContent = index + 1;
+    if (questionsContainer) {
+        questionsContainer.innerHTML = questionHTML;
+    }
+    
+    if (currentQuestionElement) {
+        currentQuestionElement.textContent = index + 1;
+    }
+    
     updateProgress();
     updateNavigation();
     
@@ -325,23 +378,23 @@ function showError() {
     }
     
     // Прокрутка к ошибке
-    questionCard?.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'center',
-        inline: 'nearest'
-    });
+    if (questionCard) {
+        questionCard.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center',
+            inline: 'nearest'
+        });
+    }
 }
 
 
 function removeError() {
     hasError = false;
     
-   
     const questionCard = document.getElementById(`question-card-${currentQuestionIndex}`);
     if (questionCard) {
         questionCard.classList.remove('error');
     }
-    
     
     const labels = document.querySelectorAll(`input[name="q${currentQuestionIndex}"]`);
     labels.forEach(input => {
@@ -354,7 +407,6 @@ function removeError() {
     if (errorMessage) {
         errorMessage.classList.remove('show');
     }
-    
     
     if (nextButton) {
         nextButton.classList.remove('error');
@@ -443,8 +495,8 @@ function finishTest() {
         showResult(result, scores);
         
         // Скрываем тест, показываем результат
-        testContent.classList.add('hidden');
-        resultContent.classList.remove('hidden');
+        if (testContent) testContent.classList.add('hidden');
+        if (resultContent) resultContent.classList.remove('hidden');
         
         // Сбрасываем состояние загрузки
         isLoading = false;
@@ -457,7 +509,9 @@ function finishTest() {
         document.removeEventListener('keydown', handleKeyPress);
         
         // Прокручиваем к результату
-        resultContent.scrollIntoView({ behavior: 'smooth' });
+        if (resultContent) {
+            resultContent.scrollIntoView({ behavior: 'smooth' });
+        }
     }, 800);
 }
 
@@ -588,42 +642,56 @@ function determineTemperament(scores) {
 function showResult(result, scores) {
     const data = temperamentData[result.name] || temperamentData["Сангвиник"];
 
-    // Обновление основной инф
-    document.getElementById('result-name').textContent = result.name;
-    document.getElementById('result-type').textContent = result.type;
-    document.getElementById('result-description').textContent = result.description;
+    // Обновление основной информации
+    const resultNameEl = document.getElementById('result-name');
+    const resultTypeEl = document.getElementById('result-type');
+    const resultDescEl = document.getElementById('result-description');
+    
+    if (resultNameEl) resultNameEl.textContent = result.name;
+    if (resultTypeEl) resultTypeEl.textContent = result.type;
+    if (resultDescEl) resultDescEl.textContent = result.description;
 
-    // Обновл баллов
-    document.getElementById('score-E').textContent = scores.E;
-    document.getElementById('score-N').textContent = scores.N;
-    document.getElementById('score-P').textContent = scores.P;
+    // Обновление баллов
+    const scoreEEl = document.getElementById('score-E');
+    const scoreNEl = document.getElementById('score-N');
+    const scorePEl = document.getElementById('score-P');
+    
+    if (scoreEEl) scoreEEl.textContent = scores.E;
+    if (scoreNEl) scoreNEl.textContent = scores.N;
+    if (scorePEl) scorePEl.textContent = scores.P;
 
     // Обновление статистики
-    document.getElementById('stat-e').textContent = scores.E;
-    document.getElementById('stat-n').textContent = scores.N;
-    document.getElementById('stat-p').textContent = scores.P;
+    const statEEl = document.getElementById('stat-e');
+    const statNEl = document.getElementById('stat-n');
+    const statPEl = document.getElementById('stat-p');
+    
+    if (statEEl) statEEl.textContent = scores.E;
+    if (statNEl) statNEl.textContent = scores.N;
+    if (statPEl) statPEl.textContent = scores.P;
 
     // Обновление иконки и цвета
     const resultBadge = document.getElementById('result-badge');
     const resultIcon = document.getElementById('result-icon');
     
-    switch(result.name) {
-        case 'Сангвиник':
-            resultIcon.className = 'bi bi-star-fill result-icon';
-            resultBadge.style.background = `linear-gradient(135deg, ${data.color}, ${adjustColor(data.color, -20)})`;
-            break;
-        case 'Холерик':
-            resultIcon.className = 'bi bi-fire result-icon';
-            resultBadge.style.background = `linear-gradient(135deg, ${data.color}, ${adjustColor(data.color, -20)})`;
-            break;
-        case 'Флегматик':
-            resultIcon.className = 'bi bi-triangle-fill result-icon';
-            resultBadge.style.background = `linear-gradient(135deg, ${data.color}, ${adjustColor(data.color, -20)})`;
-            break;
-        case 'Меланхолик':
-            resultIcon.className = 'bi bi-droplet-fill result-icon';
-            resultBadge.style.background = `linear-gradient(135deg, ${data.color}, ${adjustColor(data.color, -20)})`;
-            break;
+    if (resultBadge && resultIcon) {
+        switch(result.name) {
+            case 'Сангвиник':
+                resultIcon.className = 'bi bi-star-fill result-icon';
+                resultBadge.style.background = `linear-gradient(135deg, ${data.color}, ${adjustColor(data.color, -20)})`;
+                break;
+            case 'Холерик':
+                resultIcon.className = 'bi bi-fire result-icon';
+                resultBadge.style.background = `linear-gradient(135deg, ${data.color}, ${adjustColor(data.color, -20)})`;
+                break;
+            case 'Флегматик':
+                resultIcon.className = 'bi bi-triangle-fill result-icon';
+                resultBadge.style.background = `linear-gradient(135deg, ${data.color}, ${adjustColor(data.color, -20)})`;
+                break;
+            case 'Меланхолик':
+                resultIcon.className = 'bi bi-droplet-fill result-icon';
+                resultBadge.style.background = `linear-gradient(135deg, ${data.color}, ${adjustColor(data.color, -20)})`;
+                break;
+        }
     }
 
     // Обновление черт характера
@@ -664,9 +732,26 @@ function updateDetailedAnalysis(data) {
 
 // Вспомогательная функция для изменения цвета
 function adjustColor(color, amount) {
-    return '#' + color.replace(/^#/, '').replace(/../g, color =>
-        ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2)
-    );
+    // Исправленная версия функции
+    const clamp = (value) => Math.max(0, Math.min(255, value));
+    
+    // Преобразуем hex в RGB
+    const r = parseInt(color.substr(1, 2), 16);
+    const g = parseInt(color.substr(3, 2), 16);
+    const b = parseInt(color.substr(5, 2), 16);
+    
+    // Изменяем значение
+    const newR = clamp(r + amount);
+    const newG = clamp(g + amount);
+    const newB = clamp(b + amount);
+    
+    // Обратно в hex
+    const toHex = (num) => {
+        const hex = num.toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+    };
+    
+    return `#${toHex(newR)}${toHex(newG)}${toHex(newB)}`;
 }
 
 // Обработчик нажатия клавиш
@@ -709,8 +794,8 @@ function restartTest() {
     isLoading = false;
     
     // скрытие результата
-    testContent.classList.remove('hidden');
-    resultContent.classList.add('hidden');
+    if (testContent) testContent.classList.remove('hidden');
+    if (resultContent) resultContent.classList.add('hidden');
     
     // Обновление интерфейса
     showQuestion(currentQuestionIndex);
@@ -721,12 +806,38 @@ function restartTest() {
     document.addEventListener('keydown', handleKeyPress);
     
     // Прокрутка к началу
-    testContent.scrollIntoView({ behavior: 'smooth' });
+    if (testContent) {
+        testContent.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 // Вернуться на главную
 function goToHome() {
     window.location.href = 'index.html';
+}
+
+// Функция для шеринга результатов (ДОБАВЛЕНО!)
+function shareResult() {
+    const resultName = document.getElementById('result-name')?.textContent || 'Результат теста';
+    const resultType = document.getElementById('result-type')?.textContent || '';
+    const description = document.getElementById('result-description')?.textContent || '';
+    
+    const shareText = `Мой результат теста на темперамент: ${resultName} (${resultType})\n\n${description}\n\nПройдите тест на PsyTest!`;
+    
+    // Проверяем поддержку Web Share API
+    if (navigator.share) {
+        navigator.share({
+            title: 'Мой результат теста на темперамент',
+            text: shareText,
+            url: window.location.href
+        }).catch(err => {
+            console.log('Ошибка при шеринге:', err);
+            fallbackShare(shareText);
+        });
+    } else {
+        // Используем fallback
+        fallbackShare(shareText);
+    }
 }
 
 // Фолбэк для шеринга
@@ -816,10 +927,16 @@ window.finishTest = finishTest;
 window.restartTest = restartTest;
 window.goToHome = goToHome;
 window.setAnswer = setAnswer;
-window.shareResult = shareResult;
+window.shareResult = shareResult; // Теперь эта функция существует!
 
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function () {
     console.log("DOM загружен, инициализация теста...");
     initializeTest();
 });
+
+// Дополнительная проверка на случай, если DOM уже загружен
+if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    console.log("DOM уже загружен, запускаем инициализацию...");
+    setTimeout(initializeTest, 100);
+}
