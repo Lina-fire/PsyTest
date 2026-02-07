@@ -1188,3 +1188,15 @@ document.addEventListener('DOMContentLoaded', function() {
 window.acceptCookies = acceptCookies;
 window.declineCookies = declineCookies;
 window.checkAndShowCookieNotification = checkAndShowCookieNotification;
+
+// Запуск при полной загрузке страницы
+window.addEventListener('load', function() {
+    console.log('Страница загружена, проверяем cookies...');
+    checkAndShowCookieNotification();
+});
+
+// Или добавьте в DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM загружен, проверяем cookies...");
+    checkAndShowCookieNotification();
+});
