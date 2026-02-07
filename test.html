@@ -11,26 +11,127 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="./scss/main.css">
-    
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function(m,e,t,r,i,k,a){
-        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106614245', 'ym');
 
-    ym(106614245, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/106614245" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+    <!-- Cookie уведомление стили -->
+    <style>
+        .cookie-notification {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 15px 20px;
+            z-index: 9999;
+            display: none;
+        }
 
+        .cookie-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
 
+        .cookie-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            flex: 1;
+        }
 
+        .cookie-icon {
+            font-size: 24px;
+            color: #8b5cf6;
+            margin-top: 3px;
+        }
+
+        .cookie-text h5 {
+            margin: 0 0 5px 0;
+            color: white;
+        }
+
+        .cookie-text p {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #ccc;
+        }
+
+        .cookie-links a {
+            color: #8b5cf6;
+            text-decoration: none;
+        }
+
+        .cookie-links a:hover {
+            text-decoration: underline;
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .cookie-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cookie-buttons {
+                justify-content: flex-end;
+            }
+        }
+    </style>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+            m[i].l = 1 * new Date();
+            for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=106614245', 'ym');
+
+        ym(106614245, 'init', { ssr: true, webvisor: true, clickmap: true, ecommerce: "dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce: true, trackLinks: true });
+    </script>
+    <noscript>
+        <div><img src="https://mc.yandex.ru/watch/106614245" style="position:absolute; left:-9999px;" alt="" /></div>
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
 </head>
 
 <body>
+    <!-- Cookie уведомление -->
+    <div id="cookie-notification" class="cookie-notification">
+        <div class="cookie-container">
+            <div class="cookie-content">
+                <i class="bi bi-shield-check cookie-icon"></i>
+                <div class="cookie-text">
+                    <h5>Конфиденциальность и аналитика</h5>
+                    <p>Этот сайт собирает статистику посещения и данные посетителей с помощью Яндекс.Метрики для
+                        улучшения работы сервиса. Продолжая использовать сайт, вы соглашаетесь с обработкой ваших
+                        данных.</p>
+                    <p class="cookie-links">
+                        <a href="./privacy.html" target="_blank">Политика конфиденциальности</a> |
+                        <a href="./terms.html" target="_blank">Пользовательское соглашение</a>
+                    </p>
+                </div>
+            </div>
+            <div class="cookie-buttons">
+                <button id="cookie-accept" class="btn-primary btn-sm">
+                    <i class="bi bi-check-lg me-1"></i>Принять
+                </button>
+                <button id="cookie-decline" class="btn-outline btn-sm">
+                    <i class="bi bi-x-lg me-1"></i>Отклонить
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Фоновые звезды -->
     <div id="starsBg" class="stars-bg"></div>
 
@@ -208,6 +309,47 @@
                                 <i class="bi bi-house me-2"></i>
                                 На главную
                             </button>
+
+                            <div class="download-section">
+                                <h4><i class="bi bi-download me-2"></i>Скачать руководства по темпераментам</h4>
+                                <div class="download-grid">
+                                    <button class="btn-primary" onclick="downloadFile('sangvinik')">
+                                        <i class="bi bi-download me-2"></i>Скачать общее руководство
+                                    </button>
+                                    <a href="./sangvinik.pdf" class="download-card" onclick="downloadFile('sangvinik')"
+                                        target="_blank">
+                                        <div class="download-icon">
+                                            <i class="bi bi-file-pdf"></i>
+                                        </div>
+                                        <h5>Сангвиник</h5>
+                                        <p>Руководство для сангвиников</p>
+                                    </a>
+                                    <a href="./holerik.pdf" class="download-card" onclick="downloadFile('holerik')"
+                                        target="_blank">
+                                        <div class="download-icon">
+                                            <i class="bi bi-file-pdf"></i>
+                                        </div>
+                                        <h5>Холерик</h5>
+                                        <p>Руководство для холериков</p>
+                                    </a>
+                                    <a href="./flegmatik.pdf" class="download-card" onclick="downloadFile('flegmatik')"
+                                        target="_blank">
+                                        <div class="download-icon">
+                                            <i class="bi bi-file-pdf"></i>
+                                        </div>
+                                        <h5>Флегматик</h5>
+                                        <p>Руководство для флегматиков</p>
+                                    </a>
+                                    <a href="./melanholik.pdf" class="download-card"
+                                        onclick="downloadFile('melanholik')" target="_blank">
+                                        <div class="download-icon">
+                                            <i class="bi bi-file-pdf"></i>
+                                        </div>
+                                        <h5>Меланхолик</h5>
+                                        <p>Руководство для меланхоликов</p>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -217,6 +359,16 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
-</body>
+    <!-- Простое cookie уведомление -->
+<div id="cookie-notification" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #2c3e50; color: white; padding: 15px; text-align: center; z-index: 9999;">
+    <p>Этот сайт использует Яндекс.Метрику для сбора статистики посещений. Продолжая использовать сайт, вы соглашаетесь с этим.</p>
+    <button id="cookie-accept" onclick="acceptCookies()" style="background: #3498db; color: white; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">
+        Принять
+    </button>
+    <button id="cookie-decline" onclick="declineCookies()" style="background: #e74c3c; color: white; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">
+        Отклонить
+    </button>
+</div>
+</body> 
 
 </html>

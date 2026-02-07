@@ -940,3 +940,251 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
     console.log("DOM уже загружен, запускаем инициализацию...");
     setTimeout(initializeTest, 100);
 }
+// Функция для принятия cookies
+function acceptCookies() {
+    try {
+        localStorage.setItem('cookiesAccepted', 'true');
+        localStorage.setItem('cookieConsent', 'accepted');
+        
+        // Скрываем ВСЕ возможные уведомления
+        const notifications = [
+            document.getElementById('cookie-notification'),
+            document.querySelector('.cookie-notification'),
+            document.querySelector('#cookie-notification')
+        ];
+        
+        notifications.forEach(notification => {
+            if (notification) {
+                notification.style.display = 'none';
+                notification.remove(); // Полностью удаляем из DOM
+            }
+        });
+        
+        // Отправляем событие в Яндекс.Метрику
+        if (typeof ym !== 'undefined') {
+            try {
+                ym(106614245, 'reachGoal', 'cookie_accepted');
+                ym(106614245, 'params', { cookie_consent: 'accepted' });
+            } catch (e) {
+                console.log('Метрика не загружена:', e);
+            }
+        }
+        
+        // Показываем подтверждение
+        showCookieNotification('Согласие на использование cookies принято', 'success');
+        
+    } catch (error) {
+        console.error('Ошибка в acceptCookies:', error);
+    }
+}
+
+// Функция для отклонения cookies
+function declineCookies() {
+    try {
+        localStorage.setItem('cookiesAccepted', 'false');
+        localStorage.setItem('cookieConsent', 'declined');
+        
+        // Скрываем ВСЕ возможные уведомления
+        const notifications = [
+            document.getElementById('cookie-notification'),
+            document.querySelector('.cookie-notification'),
+            document.querySelector('#cookie-notification')
+        ];
+        
+        notifications.forEach(notification => {
+            if (notification) {
+                notification.style.display = 'none';
+                notification.remove(); // Полностью удаляем из DOM
+            }
+        });
+        
+        // Отключаем Яндекс.Метрику
+        disableYandexMetrika();
+        
+        // Показываем подтверждение
+        showCookieNotification('Использование cookies отклонено', 'warning');
+        
+    } catch (error) {
+        console.error('Ошибка в declineCookies:', error);
+    }
+}
+
+// Улучшенная инициализация cookie-уведомления
+function initializeCookieConsent() {
+    console.log('Инициализация cookie-уведомления...');
+    
+    // Даем время на загрузку DOM
+    setTimeout(() => {
+        const cookieNotification = document.getElementById('cookie-notification');
+        const acceptButton = document.getElementById('cookie-accept');
+        const declineButton = document.getElementById('cookie-decline');
+        
+        console.log('Найдены элементы:', {
+            notification: !!cookieNotification,
+            acceptButton: !!acceptButton,
+            declineButton: !!declineButton
+        });
+        
+        if (!cookieNotification) {
+            console.warn('Cookie уведомление не найдено на странице');
+            return;
+        }
+        
+        // Проверяем, было ли уже дано согласие
+        const consentGiven = localStorage.getItem('cookiesAccepted') || 
+                            localStorage.getItem('cookieConsent');
+        
+        console.log('Статус согласия:', consentGiven);
+        
+        if (!consentGiven) {
+            cookieNotification.style.display = 'block';
+            console.log('Показываем cookie уведомление');
+        } else {
+            cookieNotification.style.display = 'none';
+            cookieNotification.remove();
+            console.log('Скрываем cookie уведомление, согласие уже дано');
+        }
+        
+        // Вешаем обработчики, если кнопки существуют
+        if (acceptButton) {
+            console.log('Вешаем обработчик на кнопку Принять');
+            acceptButton.addEventListener('click', acceptCookies);
+            
+            // Дублируем onclick для подстраховки
+            acceptButton.onclick = acceptCookies;
+        }
+        
+        if (declineButton) {
+            console.log('Вешаем обработчик на кнопку Отклонить');
+            declineButton.addEventListener('click', declineCookies);
+            
+            // Дублируем onclick для подстраховки
+            declineButton.onclick = declineCookies;
+        }
+        
+    }, 100); // Небольшая задержка для гарантированной загрузки DOM
+}
+
+// ==================== УПРОЩЕННЫЙ COOKIE-УВЕДОМЛЕНИЕ ====================
+
+// Проверка и показ cookie-уведомления
+function checkAndShowCookieNotification() {
+    const cookiesAccepted = localStorage.getItem('cookiesAccepted');
+    const cookieNotification = document.getElementById('cookie-notification');
+    
+    if (cookieNotification && !cookiesAccepted) {
+        // Показываем уведомление через 1 секунду
+        setTimeout(() => {
+            cookieNotification.style.display = 'block';
+            console.log('Показываем cookie уведомление');
+        }, 1000);
+    } else if (cookieNotification && cookiesAccepted === 'true') {
+        // Скрываем, если уже принято
+        cookieNotification.style.display = 'none';
+    }
+}
+
+// Функция для принятия cookies
+function acceptCookies() {
+    console.log('Принятие cookies...');
+    
+    // Сохраняем согласие
+    localStorage.setItem('cookiesAccepted', 'true');
+    
+    // Находим и скрываем уведомление
+    const cookieNotification = document.getElementById('cookie-notification');
+    if (cookieNotification) {
+        cookieNotification.style.display = 'none';
+        console.log('Cookie уведомление скрыто');
+    }
+    
+    // Отправляем событие в Яндекс.Метрику
+    try {
+        if (typeof ym !== 'undefined') {
+            ym(106614245, 'reachGoal', 'cookie_accepted');
+            console.log('Событие cookie_accepted отправлено в Яндекс.Метрику');
+        }
+    } catch (e) {
+        console.log('Ошибка при отправке в Яндекс.Метрику:', e);
+    }
+    
+    // Показываем уведомление об успехе
+    alert('Согласие на использование cookies принято. Спасибо!');
+}
+
+// Функция для отклонения cookies
+function declineCookies() {
+    console.log('Отклонение cookies...');
+    
+    // Сохраняем отказ
+    localStorage.setItem('cookiesAccepted', 'false');
+    
+    // Находим и скрываем уведомление
+    const cookieNotification = document.getElementById('cookie-notification');
+    if (cookieNotification) {
+        cookieNotification.style.display = 'none';
+        console.log('Cookie уведомление скрыто');
+    }
+    
+    // Отключаем Яндекс.Метрику
+    disableYandexMetrika();
+    
+    // Показываем уведомление
+    alert('Использование cookies отклонено. Некоторые функции сайта могут быть недоступны.');
+}
+
+// Функция для отключения Яндекс.Метрики
+function disableYandexMetrika() {
+    try {
+        // Останавливаем Метрику
+        if (typeof ym !== 'undefined') {
+            // Создаем новый скрипт, который переопределит ym
+            const script = document.createElement('script');
+            script.textContent = `
+                window.ym = function() {
+                    console.log('Yandex.Metrika отключена из-за отказа от cookies');
+                };
+            `;
+            document.head.appendChild(script);
+        }
+        
+        // Удаляем существующий счетчик
+        const yandexScripts = document.querySelectorAll('script[src*="metrika"]');
+        yandexScripts.forEach(script => script.remove());
+        
+        // Удаляем noscript с изображением
+        const noscript = document.querySelector('noscript');
+        if (noscript && noscript.innerHTML.includes('mc.yandex.ru')) {
+            noscript.remove();
+        }
+        
+        console.log('Яндекс.Метрика отключена');
+    } catch (e) {
+        console.log('Ошибка при отключении Яндекс.Метрики:', e);
+    }
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM загружен, проверяем cookies...');
+    
+    // Проверяем и показываем cookie-уведомление
+    checkAndShowCookieNotification();
+    
+    // Вешаем обработчики на кнопки (на всякий случай)
+    const acceptButton = document.getElementById('cookie-accept');
+    const declineButton = document.getElementById('cookie-decline');
+    
+    if (acceptButton) {
+        acceptButton.addEventListener('click', acceptCookies);
+    }
+    
+    if (declineButton) {
+        declineButton.addEventListener('click', declineCookies);
+    }
+});
+
+// Глобальные экспорты для кнопок onclick
+window.acceptCookies = acceptCookies;
+window.declineCookies = declineCookies;
+window.checkAndShowCookieNotification = checkAndShowCookieNotification;

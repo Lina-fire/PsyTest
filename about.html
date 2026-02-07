@@ -14,7 +14,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="./scss/main.css">
-    
+    <!-- Cookie уведомление -->
+<div id="cookie-notification" class="cookie-notification">
+    <div class="cookie-container">
+        <div class="cookie-content">
+            <i class="bi bi-shield-check cookie-icon"></i>
+            <div class="cookie-text">
+                <h5>Конфиденциальность и аналитика</h5>
+                <p>Этот сайт собирает статистику посещения и данные посетителей с помощью Яндекс.Метрики для улучшения работы сервиса. Продолжая использовать сайт, вы соглашаетесь с обработкой ваших данных.</p>
+                <p class="cookie-links">
+                    <a href="./privacy.html" target="_blank">Политика конфиденциальности</a> | 
+                    <a href="./terms.html" target="_blank">Пользовательское соглашение</a>
+                </p>
+            </div>
+        </div>
+        <div class="cookie-buttons">
+            <button id="cookie-accept" class="btn-primary btn-sm">
+                <i class="bi bi-check-lg me-1"></i>Принять
+            </button>
+            <button id="cookie-decline" class="btn-outline btn-sm">
+                <i class="bi bi-x-lg me-1"></i>Отклонить
+            </button>
+        </div>
+    </div>
+</div>
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
     (function(m,e,t,r,i,k,a){
