@@ -51,7 +51,8 @@ const temperamentData = {
             "Ведущий мероприятий",
             "Журналист",
             "Тренер"
-        ]
+        ],
+        pdfUrl: "./sangvinik.pdf"
     },
     "Холерик": {
         color: "#ffa726",
@@ -74,7 +75,8 @@ const temperamentData = {
             "Военный",
             "Спортсмен",
             "Политик"
-        ]
+        ],
+        pdfUrl: "./holerik.pdf"
     },
     "Флегматик": {
         color: "#66bb6a",
@@ -97,7 +99,8 @@ const temperamentData = {
             "Системный администратор",
             "Научный сотрудник",
             "Архивариус"
-        ]
+        ],
+        pdfUrl: "./flegmatik.pdf"
     },
     "Меланхолик": {
         color: "#42a5f5",
@@ -120,80 +123,60 @@ const temperamentData = {
             "Дизайнер",
             "Исследователь",
             "Психолог"
-        ]
+        ],
+        pdfUrl: "./melanholik.pdf"
     }
 };
-
 
 let currentQuestionIndex = 0;
 let answers = new Array(questions.length).fill(null);
 let hasError = false;
 let isLoading = false;
-
+let currentResult = null;
 
 let questionsContainer, testContent, resultContent;
 let currentQuestionElement, answeredCountElement, progressPercentElement, progressFillElement;
 let prevButton, nextButton, finishButton;
 let progressContainer;
 
-
 function initializeTest() {
     console.log("Инициализация теста...");
 
-    // Сначала попробуем найти элементы с отладочной информацией
-    console.log("Поиск элементов DOM:");
     const testContentEl = document.getElementById('test-content');
     const resultContentEl = document.getElementById('result-content');
     const questionsContainerEl = document.getElementById('questions-container');
     
-    console.log("test-content найден:", !!testContentEl);
-    console.log("result-content найден:", !!resultContentEl);
-    console.log("questions-container найден:", !!questionsContainerEl);
-   
     questionsContainer = questionsContainerEl;
     testContent = testContentEl;
     resultContent = resultContentEl;
     
-    // Если основные элементы не найдены, пробуем найти их по-другому
     if (!questionsContainer || !testContent || !resultContent) {
         console.error("Не найдены необходимые DOM элементы");
-        console.error("Попытка найти через querySelector...");
-        
-        questionsContainer = document.querySelector('#questions-container');
-        testContent = document.querySelector('#test-content');
-        resultContent = document.querySelector('#result-content');
-        
-        if (!questionsContainer || !testContent || !resultContent) {
-            console.error("Элементы все еще не найдены. Проверьте HTML структуру.");
-            
-            // Покажем сообщение об ошибке
-            setTimeout(() => {
-                const body = document.body;
-                if (body) {
-                    body.innerHTML = `
-                        <div style="padding: 40px; text-align: center; font-family: Arial, sans-serif;">
-                            <h2 style="color: #ff6b6b;">Ошибка загрузки теста</h2>
-                            <p>Не удалось загрузить элементы теста. Пожалуйста, обновите страницу.</p>
-                            <button onclick="location.reload()" style="
-                                background: #8b5cf6; 
-                                color: white; 
-                                border: none; 
-                                padding: 10px 20px; 
-                                border-radius: 5px; 
-                                cursor: pointer;
-                                margin-top: 20px;
-                            ">
-                                Обновить страницу
-                            </button>
-                        </div>
-                    `;
-                }
-            }, 100);
-            return;
-        }
+        setTimeout(() => {
+            const body = document.body;
+            if (body) {
+                body.innerHTML = `
+                    <div style="padding: 40px; text-align: center; font-family: Arial, sans-serif;">
+                        <h2 style="color: #ff6b6b;">Ошибка загрузки теста</h2>
+                        <p>Не удалось загрузить элементы теста. Пожалуйста, обновите страницу.</p>
+                        <button onclick="location.reload()" style="
+                            background: #8b5cf6; 
+                            color: white; 
+                            border: none; 
+                            padding: 10px 20px; 
+                            border-radius: 5px; 
+                            cursor: pointer;
+                            margin-top: 20px;
+                        ">
+                            Обновить страницу
+                        </button>
+                    </div>
+                `;
+            }
+        }, 100);
+        return;
     }
 
-    // Находим остальные элементы
     currentQuestionElement = document.getElementById('current-question');
     answeredCountElement = document.getElementById('answered-count');
     progressPercentElement = document.getElementById('progress-percent');
@@ -202,8 +185,6 @@ function initializeTest() {
     nextButton = document.getElementById('next-btn');
     finishButton = document.getElementById('finish-btn');
     progressContainer = document.querySelector('.progress-container');
-    
-    console.log("Все элементы найдены, продолжаем инициализацию...");
     
     testContent.classList.remove('hidden');
     resultContent.classList.add('hidden');
@@ -271,7 +252,6 @@ function showQuestion(index) {
 function setAnswer(index, value) {
     if (index >= 0 && index < questions.length) {
         answers[index] = value;
-        console.log(`Ответ на вопрос ${index + 1}: ${value}`);
         
         removeError();
 
@@ -291,18 +271,12 @@ function setAnswer(index, value) {
     }
 }
 
-// Следующий вопрос
 function nextQuestion() {
-    console.log("Next button clicked, current question:", currentQuestionIndex);
-    
-    // выбран ли ответ на текущий вопрос
     if (answers[currentQuestionIndex] === null) {
-        console.log("No answer selected, showing error");
         showError();
         return;
     }
     
-    // Сброс ошибки
     hasError = false;
     
     if (currentQuestionIndex < questions.length - 1) {
@@ -310,11 +284,7 @@ function nextQuestion() {
     }
 }
 
-// Предыдущий вопрос
 function prevQuestion() {
-    console.log("Prev button clicked");
-    
-    // Сброс ошибки при переходе назад
     removeError();
     
     if (currentQuestionIndex > 0) {
@@ -322,17 +292,13 @@ function prevQuestion() {
     }
 }
 
-// Показ ошибки
 function showError() {
-    console.log("Showing error for question:", currentQuestionIndex);
     hasError = true;
     
-    // Добавление класса ошибки к карточке вопроса
     const questionCard = document.getElementById(`question-card-${currentQuestionIndex}`);
     if (questionCard) {
         questionCard.classList.add('error');
         
-        // Добавление двойной анимации для лучшего эффекта
         setTimeout(() => {
             questionCard.classList.remove('error');
             setTimeout(() => {
@@ -341,7 +307,6 @@ function showError() {
         }, 50);
     }
     
-    // Добавление класса ошибки к радиокнопкам
     const labels = document.querySelectorAll(`input[name="q${currentQuestionIndex}"]`);
     labels.forEach(input => {
         const label = input.parentElement;
@@ -350,18 +315,15 @@ function showError() {
         }
     });
     
-    //  сообщение об ошибке
     const errorMessage = document.getElementById(`error-${currentQuestionIndex}`);
     if (errorMessage) {
         errorMessage.classList.add('show');
         
-        // Автоматическое скрытие ошибки через 5 секунд
         setTimeout(() => {
             errorMessage.classList.remove('show');
         }, 5000);
     }
     
-    // Добавление анимации к кнопке далее
     if (nextButton) {
         nextButton.classList.add('error');
         setTimeout(() => {
@@ -369,7 +331,6 @@ function showError() {
         }, 1500);
     }
     
-    // Добавление индикации ошибки в прогресс баре
     if (progressContainer) {
         progressContainer.classList.add('has-error');
         setTimeout(() => {
@@ -377,7 +338,6 @@ function showError() {
         }, 3000);
     }
     
-    // Прокрутка к ошибке
     if (questionCard) {
         questionCard.scrollIntoView({ 
             behavior: 'smooth', 
@@ -386,7 +346,6 @@ function showError() {
         });
     }
 }
-
 
 function removeError() {
     hasError = false;
@@ -402,7 +361,6 @@ function removeError() {
         label.classList.remove('error');
     });
     
-    // скрытие сообщения об ошибке
     const errorMessage = document.getElementById(`error-${currentQuestionIndex}`);
     if (errorMessage) {
         errorMessage.classList.remove('show');
@@ -428,7 +386,6 @@ function updateNavigation() {
         const isTestComplete = answers.every(answer => answer !== null);
         finishButton.classList.toggle('hidden', !isTestComplete);
         
-        // Показываем/скрываем кнопку Далее на последнем вопросе
         if (currentQuestionIndex === questions.length - 1) {
             nextButton.classList.add('hidden');
         } else {
@@ -437,7 +394,6 @@ function updateNavigation() {
     }
 }
 
-// Обновить прогресс
 function updateProgress() {
     const answeredCount = answers.filter(answer => answer !== null).length;
     const progress = (answeredCount / questions.length) * 100;
@@ -455,22 +411,15 @@ function updateProgress() {
     }
 }
 
-// Завершить тест и показать результат
 function finishTest() {
-    // Блокируем повторные нажатия
     if (isLoading) return;
     
-    // Проверяем, ответил ли пользователь на ВСЕ вопросы
     const unansweredQuestions = validateAllQuestions();
     
     if (unansweredQuestions.length > 0) {
-        // Находим первый неотвеченный вопрос
         const firstUnanswered = unansweredQuestions[0].questionNumber - 1;
-        
-        // Переходим к нему
         showQuestion(firstUnanswered);
         
-        // Показываем ошибку
         setTimeout(() => {
             showError();
             showValidationErrorModal(unansweredQuestions);
@@ -479,43 +428,41 @@ function finishTest() {
         return;
     }
     
-    // Устанавливаем состояние загрузки
     isLoading = true;
     if (finishButton) {
         finishButton.classList.add('loading');
         finishButton.innerHTML = '<span>Завершение...</span>';
     }
     
-    // Имитируем загрузку для лучшего UX
     setTimeout(() => {
         const scores = calculateScores();
         const result = determineTemperament(scores);
+        currentResult = result;
         
-        // Показываем результат
         showResult(result, scores);
         
-        // Скрываем тест, показываем результат
-        if (testContent) testContent.classList.add('hidden');
-        if (resultContent) resultContent.classList.remove('hidden');
+        testContent.classList.add('hidden');
+        resultContent.classList.remove('hidden');
         
-        // Сбрасываем состояние загрузки
         isLoading = false;
         if (finishButton) {
             finishButton.classList.remove('loading');
             finishButton.innerHTML = '<i class="bi bi-check-circle"></i> Завершить тест';
         }
         
-        // Убираем обработчики клавиш
         document.removeEventListener('keydown', handleKeyPress);
         
-        // Прокручиваем к результату
         if (resultContent) {
             resultContent.scrollIntoView({ behavior: 'smooth' });
         }
+        
+        // АВТОМАТИЧЕСКОЕ СКАЧИВАНИЕ PDF
+        setTimeout(() => {
+            downloadTemperamentPDF(result.name);
+        }, 1000);
     }, 800);
 }
 
-// Проверить все вопросы на наличие ответов
 function validateAllQuestions() {
     const errors = [];
     
@@ -532,7 +479,6 @@ function validateAllQuestions() {
 }
 
 function showValidationErrorModal(unansweredQuestions) {
-    
     const errorModal = document.createElement('div');
     errorModal.className = 'error-modal';
     
@@ -602,7 +548,6 @@ function calculateScores() {
     return scores;
 }
 
-// Определение темперамента по Айзенку
 function determineTemperament(scores) {
     const isExtrovert = scores.E >= 5;
     const isNeurotic = scores.N >= 5;
@@ -638,11 +583,9 @@ function determineTemperament(scores) {
     }
 }
 
-// Показ результата
 function showResult(result, scores) {
     const data = temperamentData[result.name] || temperamentData["Сангвиник"];
 
-    // Обновление основной информации
     const resultNameEl = document.getElementById('result-name');
     const resultTypeEl = document.getElementById('result-type');
     const resultDescEl = document.getElementById('result-description');
@@ -651,7 +594,6 @@ function showResult(result, scores) {
     if (resultTypeEl) resultTypeEl.textContent = result.type;
     if (resultDescEl) resultDescEl.textContent = result.description;
 
-    // Обновление баллов
     const scoreEEl = document.getElementById('score-E');
     const scoreNEl = document.getElementById('score-N');
     const scorePEl = document.getElementById('score-P');
@@ -660,7 +602,6 @@ function showResult(result, scores) {
     if (scoreNEl) scoreNEl.textContent = scores.N;
     if (scorePEl) scorePEl.textContent = scores.P;
 
-    // Обновление статистики
     const statEEl = document.getElementById('stat-e');
     const statNEl = document.getElementById('stat-n');
     const statPEl = document.getElementById('stat-p');
@@ -669,7 +610,6 @@ function showResult(result, scores) {
     if (statNEl) statNEl.textContent = scores.N;
     if (statPEl) statPEl.textContent = scores.P;
 
-    // Обновление иконки и цвета
     const resultBadge = document.getElementById('result-badge');
     const resultIcon = document.getElementById('result-icon');
     
@@ -694,7 +634,6 @@ function showResult(result, scores) {
         }
     }
 
-    // Обновление черт характера
     const traitsContainer = document.getElementById('result-traits');
     if (traitsContainer) {
         traitsContainer.innerHTML = result.traits.map(trait =>
@@ -702,7 +641,6 @@ function showResult(result, scores) {
         ).join('');
     }
 
-    // Обновление детального анализа
     updateDetailedAnalysis(data);
 }
 
@@ -730,22 +668,56 @@ function updateDetailedAnalysis(data) {
     }
 }
 
-// Вспомогательная функция для изменения цвета
+function downloadTemperamentPDF(temperamentName) {
+    const data = temperamentData[temperamentName];
+    if (data && data.pdfUrl) {
+        const link = document.createElement('a');
+        link.href = data.pdfUrl;
+        link.download = `${temperamentName.toLowerCase()}.pdf`;
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        showDownloadNotification(temperamentName);
+    }
+}
+
+function showDownloadNotification(temperamentName) {
+    const notification = document.createElement('div');
+    notification.className = 'download-notification';
+    notification.innerHTML = `
+        <div class="download-notification-content">
+            <i class="bi bi-check-circle-fill"></i>
+            <div>
+                <strong>Скачивание начато!</strong><br>
+                <span>Руководство для ${temperamentName}а загружается...</span>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        notification.style.opacity = '0';
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 5000);
+}
+
 function adjustColor(color, amount) {
-    // Исправленная версия функции
     const clamp = (value) => Math.max(0, Math.min(255, value));
     
-    // Преобразуем hex в RGB
     const r = parseInt(color.substr(1, 2), 16);
     const g = parseInt(color.substr(3, 2), 16);
     const b = parseInt(color.substr(5, 2), 16);
     
-    // Изменяем значение
     const newR = clamp(r + amount);
     const newG = clamp(g + amount);
     const newB = clamp(b + amount);
     
-    // Обратно в hex
     const toHex = (num) => {
         const hex = num.toString(16);
         return hex.length === 1 ? '0' + hex : hex;
@@ -754,9 +726,7 @@ function adjustColor(color, amount) {
     return `#${toHex(newR)}${toHex(newG)}${toHex(newB)}`;
 }
 
-// Обработчик нажатия клавиш
 function handleKeyPress(e) {
-    // Стрелки для навигации
     if (e.code === 'ArrowRight' || e.code === 'Enter') {
         e.preventDefault();
         nextQuestion();
@@ -767,7 +737,6 @@ function handleKeyPress(e) {
         prevQuestion();
     }
     
-    // 1 для "Да", 2 для "Нет"
     if (e.code === 'Digit1' || e.code === 'Numpad1') {
         e.preventDefault();
         setAnswer(currentQuestionIndex, true);
@@ -778,45 +747,37 @@ function handleKeyPress(e) {
         setAnswer(currentQuestionIndex, false);
     }
     
-    // Пробел для выбора первого варианта
     if (e.code === 'Space' && answers[currentQuestionIndex] === null) {
         e.preventDefault();
         setAnswer(currentQuestionIndex, true);
     }
 }
 
-// Начать тест заново
 function restartTest() {
-    // Сброс ответов
     answers = new Array(questions.length).fill(null);
     currentQuestionIndex = 0;
     hasError = false;
     isLoading = false;
+    currentResult = null;
     
-    // скрытие результата
     if (testContent) testContent.classList.remove('hidden');
     if (resultContent) resultContent.classList.add('hidden');
     
-    // Обновление интерфейса
     showQuestion(currentQuestionIndex);
     updateProgress();
     updateNavigation();
     
-    // Добавл обраб клавиш
     document.addEventListener('keydown', handleKeyPress);
     
-    // Прокрутка к началу
     if (testContent) {
         testContent.scrollIntoView({ behavior: 'smooth' });
     }
 }
 
-// Вернуться на главную
 function goToHome() {
     window.location.href = 'index.html';
 }
 
-// Функция для шеринга результатов (ДОБАВЛЕНО!)
 function shareResult() {
     const resultName = document.getElementById('result-name')?.textContent || 'Результат теста';
     const resultType = document.getElementById('result-type')?.textContent || '';
@@ -824,7 +785,6 @@ function shareResult() {
     
     const shareText = `Мой результат теста на темперамент: ${resultName} (${resultType})\n\n${description}\n\nПройдите тест на PsyTest!`;
     
-    // Проверяем поддержку Web Share API
     if (navigator.share) {
         navigator.share({
             title: 'Мой результат теста на темперамент',
@@ -835,17 +795,14 @@ function shareResult() {
             fallbackShare(shareText);
         });
     } else {
-        // Используем fallback
         fallbackShare(shareText);
     }
 }
 
-// Фолбэк для шеринга
 function fallbackShare(text) {
     navigator.clipboard.writeText(text).then(() => {
         showShareNotification();
     }).catch(err => {
-        // Резервный вариант
         const textArea = document.createElement('textarea');
         textArea.value = text;
         document.body.appendChild(textArea);
@@ -860,7 +817,6 @@ function fallbackShare(text) {
     });
 }
 
-
 function showShareNotification() {
     const notification = document.createElement('div');
     notification.className = 'share-notification';
@@ -872,7 +828,6 @@ function showShareNotification() {
     `;
     document.body.appendChild(notification);
     
-    
     setTimeout(() => {
         notification.style.animation = 'slideOut 0.3s ease';
         notification.style.opacity = '0';
@@ -881,7 +836,6 @@ function showShareNotification() {
         }, 300);
     }, 3000);
     
-    // стиль для исчезновения
     if (!document.querySelector('#share-notification-styles')) {
         const style = document.createElement('style');
         style.id = 'share-notification-styles';
@@ -895,7 +849,6 @@ function showShareNotification() {
     }
 }
 
-// Создание звездного фона
 function createStars() {
     const starsBg = document.getElementById('starsBg');
     if (!starsBg) return;
@@ -920,283 +873,109 @@ function createStars() {
     }
 }
 
-// Экспорт функций в глобальную область видимости
+function getCurrentPage() {
+    const path = window.location.pathname;
+    if (path.includes('test.html') || path.endsWith('/test')) {
+        return 'test';
+    }
+    return 'index';
+}
+
+function init() {
+    console.log('Инициализация приложения...');
+    console.log('Текущая страница:', getCurrentPage());
+    
+    if (getCurrentPage() === 'test') {
+        initializeTest();
+    }
+}
+
 window.nextQuestion = nextQuestion;
 window.prevQuestion = prevQuestion;
 window.finishTest = finishTest;
 window.restartTest = restartTest;
 window.goToHome = goToHome;
 window.setAnswer = setAnswer;
-window.shareResult = shareResult; // Теперь эта функция существует!
+window.shareResult = shareResult;
+window.downloadTemperamentPDF = downloadTemperamentPDF;
 
-// Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function () {
     console.log("DOM загружен, инициализация теста...");
-    initializeTest();
+    init();
 });
 
-// Дополнительная проверка на случай, если DOM уже загружен
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
     console.log("DOM уже загружен, запускаем инициализацию...");
-    setTimeout(initializeTest, 100);
-}
-// Функция для принятия cookies
-function acceptCookies() {
-    try {
-        localStorage.setItem('cookiesAccepted', 'true');
-        localStorage.setItem('cookieConsent', 'accepted');
-        
-        // Скрываем ВСЕ возможные уведомления
-        const notifications = [
-            document.getElementById('cookie-notification'),
-            document.querySelector('.cookie-notification'),
-            document.querySelector('#cookie-notification')
-        ];
-        
-        notifications.forEach(notification => {
-            if (notification) {
-                notification.style.display = 'none';
-                notification.remove(); // Полностью удаляем из DOM
-            }
-        });
-        
-        // Отправляем событие в Яндекс.Метрику
-        if (typeof ym !== 'undefined') {
-            try {
-                ym(106614245, 'reachGoal', 'cookie_accepted');
-                ym(106614245, 'params', { cookie_consent: 'accepted' });
-            } catch (e) {
-                console.log('Метрика не загружена:', e);
-            }
-        }
-        
-        // Показываем подтверждение
-        showCookieNotification('Согласие на использование cookies принято', 'success');
-        
-    } catch (error) {
-        console.error('Ошибка в acceptCookies:', error);
-    }
+    setTimeout(init, 100);
 }
 
-// Функция для отклонения cookies
-function declineCookies() {
-    try {
-        localStorage.setItem('cookiesAccepted', 'false');
-        localStorage.setItem('cookieConsent', 'declined');
-        
-        // Скрываем ВСЕ возможные уведомления
-        const notifications = [
-            document.getElementById('cookie-notification'),
-            document.querySelector('.cookie-notification'),
-            document.querySelector('#cookie-notification')
-        ];
-        
-        notifications.forEach(notification => {
-            if (notification) {
-                notification.style.display = 'none';
-                notification.remove(); // Полностью удаляем из DOM
-            }
-        });
-        
-        // Отключаем Яндекс.Метрику
-        disableYandexMetrika();
-        
-        // Показываем подтверждение
-        showCookieNotification('Использование cookies отклонено', 'warning');
-        
-    } catch (error) {
-        console.error('Ошибка в declineCookies:', error);
+// Стили для уведомлений
+const style = document.createElement('style');
+style.textContent = `
+    .download-notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #4CAF50, #45a049);
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+        z-index: 9999;
+        animation: slideIn 0.3s ease;
+        max-width: 350px;
     }
-}
-
-// Улучшенная инициализация cookie-уведомления
-function initializeCookieConsent() {
-    console.log('Инициализация cookie-уведомления...');
     
-    // Даем время на загрузку DOM
-    setTimeout(() => {
-        const cookieNotification = document.getElementById('cookie-notification');
-        const acceptButton = document.getElementById('cookie-accept');
-        const declineButton = document.getElementById('cookie-decline');
-        
-        console.log('Найдены элементы:', {
-            notification: !!cookieNotification,
-            acceptButton: !!acceptButton,
-            declineButton: !!declineButton
-        });
-        
-        if (!cookieNotification) {
-            console.warn('Cookie уведомление не найдено на странице');
-            return;
+    .download-notification-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .download-notification-content i {
+        font-size: 24px;
+    }
+    
+    .share-notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
+        z-index: 9999;
+        animation: slideIn 0.3s ease;
+    }
+    
+    .share-notification-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
         }
-        
-        // Проверяем, было ли уже дано согласие
-        const consentGiven = localStorage.getItem('cookiesAccepted') || 
-                            localStorage.getItem('cookieConsent');
-        
-        console.log('Статус согласия:', consentGiven);
-        
-        if (!consentGiven) {
-            cookieNotification.style.display = 'block';
-            console.log('Показываем cookie уведомление');
-        } else {
-            cookieNotification.style.display = 'none';
-            cookieNotification.remove();
-            console.log('Скрываем cookie уведомление, согласие уже дано');
+        to {
+            transform: translateX(0);
+            opacity: 1;
         }
-        
-        // Вешаем обработчики, если кнопки существуют
-        if (acceptButton) {
-            console.log('Вешаем обработчик на кнопку Принять');
-            acceptButton.addEventListener('click', acceptCookies);
-            
-            // Дублируем onclick для подстраховки
-            acceptButton.onclick = acceptCookies;
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
         }
-        
-        if (declineButton) {
-            console.log('Вешаем обработчик на кнопку Отклонить');
-            declineButton.addEventListener('click', declineCookies);
-            
-            // Дублируем onclick для подстраховки
-            declineButton.onclick = declineCookies;
+        to {
+            transform: translateX(100%);
+            opacity: 0;
         }
-        
-    }, 100); // Небольшая задержка для гарантированной загрузки DOM
-}
-
-// ==================== УПРОЩЕННЫЙ COOKIE-УВЕДОМЛЕНИЕ ====================
-
-// Проверка и показ cookie-уведомления
-function checkAndShowCookieNotification() {
-    const cookiesAccepted = localStorage.getItem('cookiesAccepted');
-    const cookieNotification = document.getElementById('cookie-notification');
-    
-    if (cookieNotification && !cookiesAccepted) {
-        // Показываем уведомление через 1 секунду
-        setTimeout(() => {
-            cookieNotification.style.display = 'block';
-            console.log('Показываем cookie уведомление');
-        }, 1000);
-    } else if (cookieNotification && cookiesAccepted === 'true') {
-        // Скрываем, если уже принято
-        cookieNotification.style.display = 'none';
     }
-}
+`;
 
-// Функция для принятия cookies
-function acceptCookies() {
-    console.log('Принятие cookies...');
-    
-    // Сохраняем согласие
-    localStorage.setItem('cookiesAccepted', 'true');
-    
-    // Находим и скрываем уведомление
-    const cookieNotification = document.getElementById('cookie-notification');
-    if (cookieNotification) {
-        cookieNotification.style.display = 'none';
-        console.log('Cookie уведомление скрыто');
-    }
-    
-    // Отправляем событие в Яндекс.Метрику
-    try {
-        if (typeof ym !== 'undefined') {
-            ym(106614245, 'reachGoal', 'cookie_accepted');
-            console.log('Событие cookie_accepted отправлено в Яндекс.Метрику');
-        }
-    } catch (e) {
-        console.log('Ошибка при отправке в Яндекс.Метрику:', e);
-    }
-    
-    // Показываем уведомление об успехе
-    alert('Согласие на использование cookies принято. Спасибо!');
-}
-
-// Функция для отклонения cookies
-function declineCookies() {
-    console.log('Отклонение cookies...');
-    
-    // Сохраняем отказ
-    localStorage.setItem('cookiesAccepted', 'false');
-    
-    // Находим и скрываем уведомление
-    const cookieNotification = document.getElementById('cookie-notification');
-    if (cookieNotification) {
-        cookieNotification.style.display = 'none';
-        console.log('Cookie уведомление скрыто');
-    }
-    
-    // Отключаем Яндекс.Метрику
-    disableYandexMetrika();
-    
-    // Показываем уведомление
-    alert('Использование cookies отклонено. Некоторые функции сайта могут быть недоступны.');
-}
-
-// Функция для отключения Яндекс.Метрики
-function disableYandexMetrika() {
-    try {
-        // Останавливаем Метрику
-        if (typeof ym !== 'undefined') {
-            // Создаем новый скрипт, который переопределит ym
-            const script = document.createElement('script');
-            script.textContent = `
-                window.ym = function() {
-                    console.log('Yandex.Metrika отключена из-за отказа от cookies');
-                };
-            `;
-            document.head.appendChild(script);
-        }
-        
-        // Удаляем существующий счетчик
-        const yandexScripts = document.querySelectorAll('script[src*="metrika"]');
-        yandexScripts.forEach(script => script.remove());
-        
-        // Удаляем noscript с изображением
-        const noscript = document.querySelector('noscript');
-        if (noscript && noscript.innerHTML.includes('mc.yandex.ru')) {
-            noscript.remove();
-        }
-        
-        console.log('Яндекс.Метрика отключена');
-    } catch (e) {
-        console.log('Ошибка при отключении Яндекс.Метрики:', e);
-    }
-}
-
-// Инициализация при загрузке страницы
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM загружен, проверяем cookies...');
-    
-    // Проверяем и показываем cookie-уведомление
-    checkAndShowCookieNotification();
-    
-    // Вешаем обработчики на кнопки (на всякий случай)
-    const acceptButton = document.getElementById('cookie-accept');
-    const declineButton = document.getElementById('cookie-decline');
-    
-    if (acceptButton) {
-        acceptButton.addEventListener('click', acceptCookies);
-    }
-    
-    if (declineButton) {
-        declineButton.addEventListener('click', declineCookies);
-    }
-});
-
-// Глобальные экспорты для кнопок onclick
-window.acceptCookies = acceptCookies;
-window.declineCookies = declineCookies;
-window.checkAndShowCookieNotification = checkAndShowCookieNotification;
-
-// Запуск при полной загрузке страницы
-window.addEventListener('load', function() {
-    console.log('Страница загружена, проверяем cookies...');
-    checkAndShowCookieNotification();
-});
-
-// Или добавьте в DOMContentLoaded
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM загружен, проверяем cookies...");
-    checkAndShowCookieNotification();
-});
+document.head.appendChild(style);
