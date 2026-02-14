@@ -434,6 +434,11 @@ function finishTest() {
         finishButton.innerHTML = '<span>Завершение...</span>';
     }
     
+    // Отправляем событие о начале завершения теста
+    if (typeof ym !== 'undefined') {
+        ym(106614245, 'reachGoal', 'test_completed');
+    }
+    
     setTimeout(() => {
         const scores = calculateScores();
         const result = determineTemperament(scores);
@@ -454,6 +459,14 @@ function finishTest() {
         
         if (resultContent) {
             resultContent.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Отправляем событие с результатом теста
+        if (typeof ym !== 'undefined') {
+            ym(106614245, 'reachGoal', 'test_result', {
+                'temperament': result.name,
+                'scores': JSON.stringify(scores)
+            });
         }
         
         // АВТОМАТИЧЕСКОЕ СКАЧИВАНИЕ PDF
@@ -671,6 +684,24 @@ function updateDetailedAnalysis(data) {
 function downloadTemperamentPDF(temperamentName) {
     const data = temperamentData[temperamentName];
     if (data && data.pdfUrl) {
+        // Отправляем событие в Яндекс.Метрику
+        if (typeof ym !== 'undefined') {
+            try {
+                // Основная цель - скачивание файла
+                ym(106614245, 'reachGoal', 'download_pdf', {
+                    'temperament': temperamentName,
+                    'file_name': `${temperamentName.toLowerCase()}.pdf`
+                });
+                
+                // Дополнительные цели для детального анализа
+                ym(106614245, 'reachGoal', `${temperamentName.toLowerCase()}_download`);
+                
+                console.log(`Событие download_pdf отправлено для ${temperamentName}`);
+            } catch (e) {
+                console.log('Ошибка при отправке в Метрику:', e);
+            }
+        }
+        
         const link = document.createElement('a');
         link.href = data.pdfUrl;
         link.download = `${temperamentName.toLowerCase()}.pdf`;

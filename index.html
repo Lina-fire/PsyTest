@@ -326,7 +326,118 @@
             mirror: false
         });
     </script>
+<!-- Cookie Information Banner (только информационный, без кнопок) -->
+    <div id="cookie-notification" class="cookie-notification" style="display: none;">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <i class="bi bi-shield-lock-fill"></i>
+                <span>Этот сайт использует Яндекс.Метрику для сбора статистики посещений и улучшения работы. Продолжая
+                    использовать сайт, вы соглашаетесь на обработку данных.</span>
+            </div>
+        </div>
+    </div>
 
+    <style>
+        .cookie-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 16px 20px;
+            z-index: 10000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease;
+        }
+
+        .cookie-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cookie-text {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            font-size: 14px;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .cookie-text i {
+            font-size: 24px;
+            color: #8b5cf6;
+            flex-shrink: 0;
+        }
+
+        .cookie-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0 8px;
+            transition: color 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .cookie-close:hover {
+            color: #fff;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cookie-content {
+                flex-wrap: nowrap;
+            }
+            
+            .cookie-text {
+                font-size: 13px;
+            }
+            
+            .cookie-text i {
+                font-size: 20px;
+            }
+        }
+    </style>
+
+    <script>
+
+        // Показываем уведомление при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(() => {
+                const notification = document.getElementById('cookie-notification');
+                if (notification) {
+                    notification.style.display = 'block';
+                    
+                    // Автоматически скрываем через 10 секунд
+                    setTimeout(() => {
+                        notification.style.display = 'none';
+                    }, 10000);
+                }
+            }, 1000);
+        });
+    </script>
 </body>
 
 </html>
